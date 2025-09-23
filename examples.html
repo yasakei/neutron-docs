@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examples - Neutron Programming Language</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="font-inter bg-white text-gray-900">
+    <!-- Navigation -->
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <div class="neutron-logo">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="neutron-icon">
+                              <ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="#3b82f6" stroke-width="3" opacity="0.8"/>
+                              <ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="#3b82f6" stroke-width="3" opacity="0.8" transform="rotate(60 50 50)"/>
+                              <ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="#3b82f6" stroke-width="3" opacity="0.8" transform="rotate(120 50 50)"/>
+                              <circle cx="50" cy="50" r="6" fill="#1e40af"/>
+                            </svg>
+                        </div>
+                        <a href="index.html" class="ml-3 text-xl font-semibold text-gray-900">Neutron</a>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">Home</a>
+                        <a href="docs.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">Docs</a>
+                        <a href="examples.html" class="text-gray-900 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">Examples</a>
+                        <a href="index.html#performance" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">Performance</a>
+                        <a href="https://github.com/yasakei/neutron" class="bg-gray-900 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors">GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="bg-gray-50 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                Neutron Examples
+            </h1>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Explore practical examples of Neutron code to get familiar with the language syntax and features.
+            </p>
+        </div>
+    </section>
+
+    <!-- Examples Grid -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-8">
+                
+                <!-- Hello World -->
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden feature-card">
+                    <div class="p-6 border-b border-gray-100">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Hello, World!</h3>
+                        <p class="text-gray-600">The classic first program in Neutron</p>
+                    </div>
+                    <div class="bg-gray-900 p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <span class="ml-4 text-gray-400 text-sm">hello.nt</span>
+                        </div>
+                        <pre class="text-gray-300 text-sm overflow-x-auto"><code class="language-javascript">print("Hello, World!");</code></pre>
+                    </div>
+                </div>
+
+                <!-- Variables and Functions -->
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden feature-card">
+                    <div class="p-6 border-b border-gray-100">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Variables and Functions</h3>
+                        <p class="text-gray-600">Working with variables and defining functions</p>
+                    </div>
+                    <div class="bg-gray-900 p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <span class="ml-4 text-gray-400 text-sm">greet.nt</span>
+                        </div>
+                        <pre class="text-gray-300 text-sm overflow-x-auto"><code class="language-javascript">fun greet(name) {
+    return "Hello, " + name + "!";
+}
+
+var message = greet("Neutron");
+print(message);
+
+// Output: Hello, Neutron!</code></pre>
+                    </div>
+                </div>
+
+                <!-- Classes and Objects -->
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden feature-card">
+                    <div class="p-6 border-b border-gray-100">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Classes and Objects</h3>
+                        <p class="text-gray-600">Object-oriented programming with classes</p>
+                    </div>
+                    <div class="bg-gray-900 p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <span class="ml-4 text-gray-400 text-sm">person.nt</span>
+                        </div>
+                        <pre class="text-gray-300 text-sm overflow-x-auto"><code class="language-javascript">class Person {
+    var name;
+
+    fun setName(name) {
+        this.name = name;
+    }
+
+    fun greet() {
+        print("Hello, my name is " + this.name);
+    }
+}
+
+var person = Person();
+person.setName("Alice");
+person.greet();
+
+// Output: Hello, my name is Alice</code></pre>
+                    </div>
+                </div>
+
+                <!-- Control Flow -->
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden feature-card">
+                    <div class="p-6 border-b border-gray-100">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Control Flow</h3>
+                        <p class="text-gray-600">Conditional statements and loops</p>
+                    </div>
+                    <div class="bg-gray-900 p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <span class="ml-4 text-gray-400 text-sm">control.nt</span>
+                        </div>
+                        <pre class="text-gray-300 text-sm overflow-x-auto"><code class="language-javascript">var age = 25;
+
+if (age >= 18) {
+    print("You are an adult");
+} else {
+    print("You are a minor");
+}
+
+// Loop example
+for (var i = 1; i <= 5; i = i + 1) {
+    print("Count: " + i);
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- Calculator -->
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden feature-card">
+                    <div class="p-6 border-b border-gray-100">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Simple Calculator</h3>
+                        <p class="text-gray-600">Basic arithmetic operations</p>
+                    </div>
+                    <div class="bg-gray-900 p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <span class="ml-4 text-gray-400 text-sm">calculator.nt</span>
+                        </div>
+                        <pre class="text-gray-300 text-sm overflow-x-auto"><code class="language-javascript">class Calculator {
+    fun add(a, b) {
+        return a + b;
+    }
+    
+    fun subtract(a, b) {
+        return a - b;
+    }
+    
+    fun multiply(a, b) {
+        return a * b;
+    }
+    
+    fun divide(a, b) {
+        if (b != 0) {
+            return a / b;
+        } else {
+            return "Error: Division by zero";
+        }
+    }
+}
+
+var calc = Calculator();
+print(calc.add(10, 5));      // 15
+print(calc.subtract(10, 3)); // 7
+print(calc.multiply(4, 6));  // 24
+print(calc.divide(20, 4));   // 5</code></pre>
+                    </div>
+                </div>
+
+                <!-- Working with Modules -->
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden feature-card">
+                    <div class="p-6 border-b border-gray-100">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Working with Modules</h3>
+                        <p class="text-gray-600">Using the standard library modules</p>
+                    </div>
+                    <div class="bg-gray-900 p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <span class="ml-4 text-gray-400 text-sm">modules.nt</span>
+                        </div>
+                        <pre class="text-gray-300 text-sm overflow-x-auto"><code class="language-javascript">// Import math module
+import "math";
+
+var radius = 5;
+var area = math.PI * math.pow(radius, 2);
+print("Circle area: " + area);
+
+var squareRoot = math.sqrt(16);
+print("Square root of 16: " + squareRoot);
+
+// Import JSON module
+import "json";
+
+var data = json.parse('{"name": "Neutron", "version": 1.0}');
+print("Language: " + data.name);
+print("Version: " + data.version);</code></pre>
+                    </div>
+                </div>
+
+                <!-- Array-like Operations -->
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden feature-card">
+                    <div class="p-6 border-b border-gray-100">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">String Operations</h3>
+                        <p class="text-gray-600">Working with strings and text processing</p>
+                    </div>
+                    <div class="bg-gray-900 p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <span class="ml-4 text-gray-400 text-sm">strings.nt</span>
+                        </div>
+                        <pre class="text-gray-300 text-sm overflow-x-auto"><code class="language-javascript">var greeting = "Hello";
+var name = "World";
+var message = greeting + ", " + name + "!";
+
+print(message);
+print("Message length: " + len(message));
+
+// String comparison
+var lang1 = "Neutron";
+var lang2 = "neutron";
+
+if (lang1 == lang2) {
+    print("Same language");
+} else {
+    print("Different case");
+}
+
+// Working with string properties
+var text = "Neutron Programming Language";
+print("Text: " + text);
+print("Length: " + len(text));</code></pre>
+                    </div>
+                </div>
+
+                <!-- Fibonacci Sequence -->
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden feature-card">
+                    <div class="p-6 border-b border-gray-100">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Fibonacci Sequence</h3>
+                        <p class="text-gray-600">Recursive function example</p>
+                    </div>
+                    <div class="bg-gray-900 p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <span class="ml-4 text-gray-400 text-sm">fibonacci.nt</span>
+                        </div>
+                        <pre class="text-gray-300 text-sm overflow-x-auto"><code class="language-javascript">fun fibonacci(n) {
+    if (n <= 1) {
+        return n;
+    } else {
+        return fibonacci(n - 1) + fibonacci(n - 2);
+    }
+}
+
+// Print first 10 Fibonacci numbers
+for (var i = 0; i < 10; i = i + 1) {
+    print("F(" + i + ") = " + fibonacci(i));
+}
+
+// Output:
+// F(0) = 0
+// F(1) = 1
+// F(2) = 1
+// F(3) = 2
+// F(4) = 3
+// F(5) = 5
+// F(6) = 8
+// F(7) = 13
+// F(8) = 21
+// F(9) = 34</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- More Examples Section -->
+    <section class="bg-gray-50 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">More Examples</h2>
+                <p class="text-xl text-gray-600">Explore additional code samples and tutorials</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 text-center">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Standard Library</h3>
+                    <p class="text-gray-600 mb-4">Learn how to use built-in modules for math, HTTP, and JSON operations.</p>
+                    <a href="docs.html#modules" class="text-blue-600 hover:text-blue-700 font-medium">View Modules →</a>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 text-center">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Advanced Patterns</h3>
+                    <p class="text-gray-600 mb-4">Explore advanced programming patterns and best practices in Neutron.</p>
+                    <a href="docs.html" class="text-blue-600 hover:text-blue-700 font-medium">Read Docs →</a>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 text-center">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Performance Tips</h3>
+                    <p class="text-gray-600 mb-4">Learn how to write efficient Neutron code and optimize performance.</p>
+                    <a href="index.html#performance" class="text-blue-600 hover:text-blue-700 font-medium">View Performance →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="neutron-logo">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="neutron-icon">
+                              <ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="#3b82f6" stroke-width="3" opacity="0.8"/>
+                              <ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="#3b82f6" stroke-width="3" opacity="0.8" transform="rotate(60 50 50)"/>
+                              <ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="#3b82f6" stroke-width="3" opacity="0.8" transform="rotate(120 50 50)"/>
+                              <circle cx="50" cy="50" r="6" fill="#1e40af"/>
+                            </svg>
+                        </div>
+                        <span class="ml-3 text-xl font-semibold">Neutron</span>
+                    </div>
+                    <p class="text-gray-400">A modern programming language for the future.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Documentation</h3>
+                    <ul class="space-y-2">
+                        <li><a href="docs.html" class="text-gray-400 hover:text-white transition-colors">Language Reference</a></li>
+                        <li><a href="examples.html" class="text-gray-400 hover:text-white transition-colors">Examples</a></li>
+                        <li><a href="index.html#performance" class="text-gray-400 hover:text-white transition-colors">Performance</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Community</h3>
+                    <ul class="space-y-2">
+                        <li><a href="https://github.com/yasakei/neutron" class="text-gray-400 hover:text-white transition-colors">GitHub</a></li>
+                        <li><a href="https://github.com/yasakei/neutron/issues" class="text-gray-400 hover:text-white transition-colors">Issues</a></li>
+                        <li><a href="https://github.com/yasakei/neutron/discussions" class="text-gray-400 hover:text-white transition-colors">Discussions</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Project</h3>
+                    <ul class="space-y-2">
+                        <li><a href="https://github.com/yasakei" class="text-gray-400 hover:text-white transition-colors">Creator</a></li>
+                        <li><span class="text-gray-400">Version: Alpha</span></li>
+                        <li><span class="text-gray-400">License: MIT</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p class="text-gray-400">&copy; 2024 yasakei. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+/* Custom styles for Neutron website */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+.font-inter {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Code block styling */
+pre {
+  background-color: #1a1a1a !important;
+  border-radius: 12px;
+  padding: 1.5rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+code {
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+}
+
+/* Navigation hover effects */
+nav a {
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+nav a:hover {
+  transform: translateY(-1px);
+}
+
+/* Button hover effects */
+.btn-hover {
+  transition: all 0.2s ease;
+}
+
+.btn-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Card hover effects */
+.card-hover {
+  transition: all 0.2s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Syntax highlighting adjustments */
+.token.comment {
+  color: #6b7280;
+}
+
+.token.string {
+  color: #10b981;
+}
+
+.token.keyword {
+  color: #3b82f6;
+}
+
+.token.function {
+  color: #f59e0b;
+}
+
+.token.number {
+  color: #ef4444;
+}
+
+/* Mobile menu animation */
+#mobile-menu {
+  transition: all 0.3s ease;
+}
+
+#mobile-menu.show {
+  display: block;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Performance stats animation */
+.performance-stat {
+  animation: fadeInUp 0.6s ease;
+}
+
+.performance-stat:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.performance-stat:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Feature grid hover effects */
+.feature-card {
+  transition: all 0.3s ease;
+  border: 1px solid #e5e7eb;
+}
+
+.feature-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.1);
+}
+
+/* Responsive code blocks */
+@media (max-width: 768px) {
+  pre {
+    font-size: 0.75rem;
+    padding: 1rem;
+  }
+  
+  .code-window {
+    margin: 0 -1rem;
+    border-radius: 0;
+  }
+}
+
+/* Focus states for accessibility */
+a:focus, button:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Loading animation for code blocks */
+.code-loading {
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Neutron Icon Styles */
+.neutron-icon {
+  width: 100%;
+  height: 100%;
+}
+
+.neutron-logo {
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+}
+
+.neutron-logo-large {
+  width: 96px;
+  height: 96px;
+  display: inline-block;
+}
+
+.neutron-logo-hero {
+  width: 120px;
+  height: 120px;
+  display: inline-block;
+  margin: 0 auto;
+}
+
+/* Animation pause on hover for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .neutron-icon circle {
+    animation: none !important;
+  }
+}
+
+/* Hover effect for logo */
+.neutron-logo:hover .neutron-icon {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
+
+.neutron-logo-large:hover .neutron-icon {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
