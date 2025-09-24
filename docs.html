@@ -54,6 +54,7 @@
                         <a href="#installation" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors">Installation</a>
                         <a href="#syntax" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors">Syntax</a>
                         <a href="#data-types" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors">Data Types</a>
+                        <a href="#object-literals" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors">Object Literals</a>
                         <a href="#variables" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors">Variables</a>
                         <a href="#operators" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors">Operators</a>
                         <a href="#functions" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors">Functions</a>
@@ -62,7 +63,6 @@
                         <a href="#modules" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors">Modules</a>
                         <a href="#built-ins" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors">Built-in Functions</a>
                         <a href="#std-lib" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors">Standard Library</a>
-                        <a href="#api-reference" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors">API Reference</a>
                     </nav>
                 </div>
             </aside>
@@ -131,7 +131,7 @@ make
                             Create a file called <code class="bg-gray-100 px-2 py-1 rounded text-sm">hello.nt</code> with the following content:
                         </p>
                         <div class="bg-gray-900 rounded-xl p-6 mb-4">
-                            <pre class="text-gray-300 text-sm"><code class="language-javascript">print("Hello, Neutron!");</code></pre>
+                            <pre class="text-gray-300 text-sm"><code class="language-javascript">say("Hello, Neutron!");</code></pre>
                         </div>
                         <p class="text-gray-600 mb-4">
                             Run the program:
@@ -208,6 +208,40 @@ var message = 'Hello!';</code></pre>
                         </div>
                     </section>
 
+                    <!-- Object Literals -->
+                    <section id="object-literals" class="mb-16">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-6">Object Literals</h2>
+                        <p class="text-gray-600 mb-6">
+                            Object literals are collections of key-value pairs enclosed in curly braces (<code class="bg-gray-100 px-2 py-1 rounded text-sm">{}</code>). Keys must be string literals, and values can be any valid expression.
+                        </p>
+                        <div class="bg-gray-900 rounded-xl p-6 mb-6">
+                            <pre class="text-gray-300 text-sm"><code class="language-javascript">var person = {
+  "name": "John Doe",
+  "age": 30,
+  "city": "New York"
+};</code></pre>
+                        </div>
+                        
+                        <p class="text-gray-600 mb-4">
+                            Object literals can be used with the JSON module to serialize and deserialize data:
+                        </p>
+                        <div class="bg-gray-900 rounded-xl p-6 mb-6">
+                            <pre class="text-gray-300 text-sm"><code class="language-javascript">use json;
+
+var data = {
+  "name": "John Doe",
+  "age": 30,
+  "city": "New York"
+};
+
+// Convert object to JSON string
+var jsonString = json.stringify(data);
+
+// Parse JSON string back to object
+var parsed = json.parse(jsonString);</code></pre>
+                        </div>
+                    </section>
+
                     <!-- Operators -->
                     <section id="operators" class="mb-16">
                         <h2 class="text-3xl font-bold text-gray-900 mb-6">Operators</h2>
@@ -247,10 +281,10 @@ var w = 10 / 2;  // 5</code></pre>
                                     <li><code class="bg-gray-100 px-2 py-1 rounded text-sm">&gt;=</code> Greater than or equal</li>
                                 </ul>
                                 <div class="bg-gray-900 rounded-lg p-4">
-                                    <pre class="text-gray-300 text-sm"><code class="language-javascript">print(10 == 10); // true
-print(10 != 5);  // true
-print(5 < 10);   // true
-print(15 >= 10); // true</code></pre>
+                                    <pre class="text-gray-300 text-sm"><code class="language-javascript">say(10 == 10); // true
+say(10 != 5);  // true
+say(5 < 10);   // true
+say(15 >= 10); // true</code></pre>
                                 </div>
                             </div>
                         </div>
@@ -265,13 +299,13 @@ print(15 >= 10); // true</code></pre>
                                     <li><code class="bg-gray-100 px-2 py-1 rounded text-sm">!</code> Logical NOT</li>
                                 </ul>
                                 <div class="bg-gray-900 rounded-lg p-4">
-                                    <pre class="text-gray-300 text-sm"><code class="language-javascript">print(true and false); // false
-print(true or false);  // true
-print(!true);          // false
+                                    <pre class="text-gray-300 text-sm"><code class="language-javascript">say(true and false); // false
+say(true or false);  // true
+say(!true);          // false
 
 var a = 5;
 var b = 10;
-print(a > 0 and b < 20); // true</code></pre>
+say(a > 0 and b < 20); // true</code></pre>
                                 </div>
                             </div>
                         </div>
@@ -296,26 +330,45 @@ version = 2.0;</code></pre>
 
                     <!-- Functions -->
                     <section id="functions" class="mb-16">
-                        <h2 class="text-3xl font-bold text-gray-900 mb-6">Functions</h2>
-                        <p class="text-gray-600 mb-6">
-                            Functions are declared using the <code class="bg-gray-100 px-2 py-1 rounded text-sm">fun</code> keyword. They can take parameters and return values.
+                        <h2 class="text-3xl font-bold text-gray-900 mb-6">Functions <span class="text-sm text-orange-600 font-normal">(Partially implemented)</span></h2>
+                        <p class="text-gray-600 mb-4">
+                            Functions are defined using the <code class="bg-gray-100 px-2 py-1 rounded text-sm">fun</code> keyword. Function definitions and calls are available, but return statements are currently under development.
+                        </p>
+                        
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                            <p class="text-blue-800 text-sm">
+                                <strong>Note:</strong> Function definitions and calls are available, but return statements are currently under development.
+                            </p>
+                        </div>
+
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Defining Functions</h3>
+                        <div class="bg-gray-900 rounded-xl p-6 mb-6">
+                            <pre class="text-gray-300 text-sm"><code class="language-javascript">fun greet(name) {
+    say("Hello, " + name + "!");
+}</code></pre>
+                        </div>
+
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Calling Functions</h3>
+                        <div class="bg-gray-900 rounded-xl p-6 mb-6">
+                            <pre class="text-gray-300 text-sm"><code class="language-javascript">greet("Neutron"); // Prints "Hello, Neutron!"</code></pre>
+                        </div>
+
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Return Statement <span class="text-sm text-orange-600 font-normal">(Not yet implemented)</span></h3>
+                        <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4">
+                            <p class="text-orange-800 text-sm">
+                                <strong>Note:</strong> Return statements are currently under development and not yet available in Neutron.
+                            </p>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            The <code class="bg-gray-100 px-2 py-1 rounded text-sm">return</code> statement will be used to return a value from a function.
                         </p>
                         <div class="bg-gray-900 rounded-xl p-6 mb-6">
-                            <pre class="text-gray-300 text-sm"><code class="language-javascript">// Function declaration
-fun greet(name) {
-    return "Hello, " + name + "!";
-}
-
-// Function call
-var message = greet("World");
-print(message); // Output: Hello, World!
-
-// Function with multiple parameters
-fun add(a, b) {
+                            <pre class="text-gray-300 text-sm"><code class="language-javascript">fun add(a, b) {
     return a + b;
 }
 
-var sum = add(5, 3); // sum = 8</code></pre>
+var result = add(5, 10);
+say(result); // 15</code></pre>
                         </div>
                     </section>
 
@@ -339,7 +392,7 @@ var sum = add(5, 3); // sum = 8</code></pre>
     }
 
     fun introduce() {
-        print("Hi, I'm " + this.name + " and I'm " + this.age + " years old.");
+        say("Hi, I'm " + this.name + " and I'm " + this.age + " years old.");
     }
 }
 
@@ -354,40 +407,46 @@ person.introduce(); // Output: Hi, I'm Alice and I'm 30 years old.</code></pre>
                     <!-- Control Flow -->
                     <section id="control-flow" class="mb-16">
                         <h2 class="text-3xl font-bold text-gray-900 mb-6">Control Flow</h2>
+                        <p class="text-gray-600 mb-6">
+                            Neutron provides several control flow statements for conditionals and loops.
+                        </p>
                         
-                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">If Statements</h3>
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">If-Else Statements</h3>
+                        <p class="text-gray-600 mb-4">
+                            The <code class="bg-gray-100 px-2 py-1 rounded text-sm">if</code> statement executes a block of code if a condition is true. The <code class="bg-gray-100 px-2 py-1 rounded text-sm">else</code> statement can be used to execute a block of code if the condition is false.
+                        </p>
                         <div class="bg-gray-900 rounded-xl p-6 mb-6">
-                            <pre class="text-gray-300 text-sm"><code class="language-javascript">var age = 18;
-
-if (age >= 18) {
-    print("You are an adult.");
+                            <pre class="text-gray-300 text-sm"><code class="language-javascript">if (x > 10) {
+    say("x is greater than 10");
 } else {
-    print("You are a minor.");
-}
-
-// Multiple conditions
-var score = 85;
-if (score >= 90) {
-    print("A grade");
-} else if (score >= 80) {
-    print("B grade");
-} else {
-    print("C grade or below");
+    say("x is not greater than 10");
 }</code></pre>
                         </div>
 
-                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Loops</h3>
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">While Loops</h3>
+                        <p class="text-gray-600 mb-4">
+                            The <code class="bg-gray-100 px-2 py-1 rounded text-sm">while</code> loop executes a block of code as long as a condition is true.
+                        </p>
                         <div class="bg-gray-900 rounded-xl p-6 mb-6">
-                            <pre class="text-gray-300 text-sm"><code class="language-javascript">// While loop
-var i = 0;
+                            <pre class="text-gray-300 text-sm"><code class="language-javascript">var i = 0;
 while (i < 5) {
-    print(i);
+    say(i);
     i = i + 1;
-}
+}</code></pre>
+                        </div>
 
-// For loop
-for (var j = 0; j < 3; j = j + 1) {
-    print("Iteration: " + j);
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">For Loops <span class="text-sm text-orange-600 font-normal">(Not yet implemented)</span></h3>
+                        <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4">
+                            <p class="text-orange-800 text-sm">
+                                <strong>Note:</strong> For loops are currently under development and not yet available in Neutron.
+                            </p>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            The <code class="bg-gray-100 px-2 py-1 rounded text-sm">for</code> loop is a more convenient way to write loops with a clear initializer, condition, and increment.
+                        </p>
+                        <div class="bg-gray-900 rounded-xl p-6 mb-6">
+                            <pre class="text-gray-300 text-sm"><code class="language-javascript">for (var i = 0; i < 5; i = i + 1) {
+    say(i);
 }</code></pre>
                         </div>
                     </section>
@@ -396,20 +455,101 @@ for (var j = 0; j < 3; j = j + 1) {
                     <section id="modules" class="mb-16">
                         <h2 class="text-3xl font-bold text-gray-900 mb-6">Modules</h2>
                         <p class="text-gray-600 mb-6">
-                            Neutron supports modular programming through import statements. The standard library includes modules for math, HTTP, JSON, and more.
+                            Neutron supports modules, which allow you to organize your code into separate files. The <code class="bg-gray-100 px-2 py-1 rounded text-sm">use</code> statement is used to import a module.
+                        </p>
+
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Using Modules</h3>
+                        <div class="bg-gray-900 rounded-xl p-6 mb-6">
+                            <pre class="text-gray-300 text-sm"><code class="language-javascript">use math;</code></pre>
+                        </div>
+
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">The math Module</h3>
+                        <p class="text-gray-600 mb-4">
+                            The <code class="bg-gray-100 px-2 py-1 rounded text-sm">math</code> module provides a set of mathematical functions.
                         </p>
                         <div class="bg-gray-900 rounded-xl p-6 mb-6">
-                            <pre class="text-gray-300 text-sm"><code class="language-javascript">// Import math module
-import "math";
+                            <pre class="text-gray-300 text-sm"><code class="language-javascript">use math;
 
-var result = math.sqrt(16); // result = 4
-var pi = math.PI; // pi = 3.14159...
+var sum = math.add(5, 3);        // 8
+var diff = math.subtract(10, 4); // 6
+var product = math.multiply(6, 7); // 42
+var quotient = math.divide(15, 3); // 5
+var power = math.pow(2, 3);       // 8
+var root = math.sqrt(16);         // 4
+var absolute = math.abs(-5);      // 5
 
-// Import JSON module
-import "json";
+// Trigonometric functions
+var sine = math.sin(1.57);        // ~1
+var cosine = math.cos(0);         // 1
+var tangent = math.tan(0.785);    // ~1
 
-var data = json.parse('{"name": "Neutron", "version": 1.0}');
-print(data.name); // Output: Neutron</code></pre>
+// Logarithmic and exponential
+var log = math.log(2.718);        // ~1
+var exp = math.exp(1);            // ~2.718
+
+// Rounding functions
+var ceiling = math.ceil(3.2);     // 4
+var floor = math.floor(3.8);      // 3
+var rounded = math.round(3.6);    // 4</code></pre>
+                        </div>
+
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">The sys Module</h3>
+                        <p class="text-gray-600 mb-4">
+                            The <code class="bg-gray-100 px-2 py-1 rounded text-sm">sys</code> module provides system-level functions for interacting with the operating system and environment.
+                        </p>
+
+                        <h4 class="text-lg font-semibold text-gray-900 mb-3">Input/Output Functions</h4>
+                        <div class="bg-gray-900 rounded-xl p-6 mb-4">
+                            <pre class="text-gray-300 text-sm"><code class="language-javascript">use sys;
+
+// Read input without a prompt
+var name = sys.input();
+
+// Read input with a prompt
+var age = sys.input("Enter your age: ");</code></pre>
+                        </div>
+
+                        <h4 class="text-lg font-semibold text-gray-900 mb-3">File System Functions</h4>
+                        <div class="bg-gray-900 rounded-xl p-6 mb-4">
+                            <pre class="text-gray-300 text-sm"><code class="language-javascript">use sys;
+
+// File operations
+sys.cp("source.txt", "destination.txt");  // Copy file
+sys.mv("old.txt", "new.txt");             // Move/rename file
+sys.rm("unwanted.txt");                   // Remove file
+
+// Directory operations
+sys.mkdir("new_directory");               // Create directory
+sys.rmdir("old_directory");               // Remove directory
+
+// File/directory checking
+var exists = sys.exists("file.txt");      // Check if exists
+
+// Read and write files
+var content = sys.read("file.txt");       // Read file contents
+sys.write("file.txt", "Hello World");     // Write to file
+sys.append("file.txt", "More text");      // Append to file</code></pre>
+                        </div>
+
+                        <h4 class="text-lg font-semibold text-gray-900 mb-3">System Information Functions</h4>
+                        <div class="bg-gray-900 rounded-xl p-6 mb-4">
+                            <pre class="text-gray-300 text-sm"><code class="language-javascript">use sys;
+
+var currentDir = sys.cwd();              // Get current directory
+sys.chdir("/path/to/directory");         // Change directory
+var envVar = sys.env("PATH");            // Get environment variable
+var sysInfo = sys.info();                // Get system information</code></pre>
+                        </div>
+
+                        <h4 class="text-lg font-semibold text-gray-900 mb-3">Process Control Functions</h4>
+                        <div class="bg-gray-900 rounded-xl p-6 mb-6">
+                            <pre class="text-gray-300 text-sm"><code class="language-javascript">use sys;
+
+sys.exit();                              // Exit with code 0
+sys.exit(1);                             // Exit with code 1
+
+// Execute system command
+var result = sys.exec("ls -la");         // Returns output and exit code</code></pre>
                         </div>
                     </section>
 
@@ -417,35 +557,89 @@ print(data.name); // Output: Neutron</code></pre>
                     <section id="built-ins" class="mb-16">
                         <h2 class="text-3xl font-bold text-gray-900 mb-6">Built-in Functions</h2>
                         <p class="text-gray-600 mb-6">
-                            Neutron provides several built-in functions for common operations:
+                            Neutron provides several built-in functions that are available in the global scope:
                         </p>
                         
                         <div class="space-y-6">
                             <div class="bg-white border border-gray-200 rounded-lg p-6">
-                                <h4 class="text-lg font-semibold text-gray-900 mb-3">print(value)</h4>
-                                <p class="text-gray-600 mb-3">Outputs a value to the console</p>
+                                <h4 class="text-lg font-semibold text-gray-900 mb-3">say(value)</h4>
+                                <p class="text-gray-600 mb-3">Prints a value to the console</p>
                                 <div class="bg-gray-900 rounded-lg p-4">
-                                    <pre class="text-gray-300 text-sm"><code class="language-javascript">print("Hello, World!");
-print(42);
-print(true);</code></pre>
+                                    <pre class="text-gray-300 text-sm"><code class="language-javascript">say("Hello, World!");
+say(42);
+say(true);</code></pre>
                                 </div>
                             </div>
                             
                             <div class="bg-white border border-gray-200 rounded-lg p-6">
-                                <h4 class="text-lg font-semibold text-gray-900 mb-3">len(string)</h4>
-                                <p class="text-gray-600 mb-3">Returns the length of a string</p>
+                                <h4 class="text-lg font-semibold text-gray-900 mb-3">int(string)</h4>
+                                <p class="text-gray-600 mb-3">Converts a string to an integer</p>
                                 <div class="bg-gray-900 rounded-lg p-4">
-                                    <pre class="text-gray-300 text-sm"><code class="language-javascript">var length = len("Neutron"); // length = 7</code></pre>
+                                    <pre class="text-gray-300 text-sm"><code class="language-javascript">var num = int("42"); // num = 42
+var zero = int("0");  // zero = 0</code></pre>
                                 </div>
                             </div>
                             
                             <div class="bg-white border border-gray-200 rounded-lg p-6">
-                                <h4 class="text-lg font-semibold text-gray-900 mb-3">type(value)</h4>
-                                <p class="text-gray-600 mb-3">Returns the type of a value as a string</p>
+                                <h4 class="text-lg font-semibold text-gray-900 mb-3">str(number)</h4>
+                                <p class="text-gray-600 mb-3">Converts a number to a string</p>
                                 <div class="bg-gray-900 rounded-lg p-4">
-                                    <pre class="text-gray-300 text-sm"><code class="language-javascript">print(type(42));     // "number"
-print(type("hi"));   // "string"
-print(type(true));   // "boolean"</code></pre>
+                                    <pre class="text-gray-300 text-sm"><code class="language-javascript">var text = str(42);   // text = "42"
+var pi = str(3.14);   // pi = "3.14"</code></pre>
+                                </div>
+                            </div>
+
+                            <div class="bg-white border border-gray-200 rounded-lg p-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-3">bin_to_int(string)</h4>
+                                <p class="text-gray-600 mb-3">Converts a binary string to an integer</p>
+                                <div class="bg-gray-900 rounded-lg p-4">
+                                    <pre class="text-gray-300 text-sm"><code class="language-javascript">var num = bin_to_int("1010"); // num = 10
+var eight = bin_to_int("1000"); // eight = 8</code></pre>
+                                </div>
+                            </div>
+
+                            <div class="bg-white border border-gray-200 rounded-lg p-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-3">int_to_bin(number)</h4>
+                                <p class="text-gray-600 mb-3">Converts an integer to a binary string</p>
+                                <div class="bg-gray-900 rounded-lg p-4">
+                                    <pre class="text-gray-300 text-sm"><code class="language-javascript">var binary = int_to_bin(10); // binary = "1010"
+var eight = int_to_bin(8);    // eight = "1000"</code></pre>
+                                </div>
+                            </div>
+
+                            <div class="bg-white border border-gray-200 rounded-lg p-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-3">char_to_int(string)</h4>
+                                <p class="text-gray-600 mb-3">Converts a single-character string to its ASCII value</p>
+                                <div class="bg-gray-900 rounded-lg p-4">
+                                    <pre class="text-gray-300 text-sm"><code class="language-javascript">var ascii = char_to_int("A"); // ascii = 65
+var space = char_to_int(" ");  // space = 32</code></pre>
+                                </div>
+                            </div>
+
+                            <div class="bg-white border border-gray-200 rounded-lg p-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-3">int_to_char(number)</h4>
+                                <p class="text-gray-600 mb-3">Converts a number (ASCII value) to a single-character string</p>
+                                <div class="bg-gray-900 rounded-lg p-4">
+                                    <pre class="text-gray-300 text-sm"><code class="language-javascript">var char = int_to_char(65); // char = "A"
+var space = int_to_char(32); // space = " "</code></pre>
+                                </div>
+                            </div>
+
+                            <div class="bg-white border border-gray-200 rounded-lg p-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-3">string_get_char_at(string, number)</h4>
+                                <p class="text-gray-600 mb-3">Returns the character at the given index</p>
+                                <div class="bg-gray-900 rounded-lg p-4">
+                                    <pre class="text-gray-300 text-sm"><code class="language-javascript">var char = string_get_char_at("Neutron", 0); // char = "N"
+var last = string_get_char_at("Hello", 4);    // last = "o"</code></pre>
+                                </div>
+                            </div>
+
+                            <div class="bg-white border border-gray-200 rounded-lg p-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-3">string_length(string)</h4>
+                                <p class="text-gray-600 mb-3">Returns the length of the string</p>
+                                <div class="bg-gray-900 rounded-lg p-4">
+                                    <pre class="text-gray-300 text-sm"><code class="language-javascript">var length = string_length("Neutron"); // length = 7
+var empty = string_length("");          // empty = 0</code></pre>
                                 </div>
                             </div>
                         </div>
@@ -463,7 +657,7 @@ print(type(true));   // "boolean"</code></pre>
                             The math module provides mathematical functions and constants.
                         </p>
                         <div class="bg-gray-900 rounded-xl p-6 mb-6">
-                            <pre class="text-gray-300 text-sm"><code class="language-javascript">import "math";
+                            <pre class="text-gray-300 text-sm"><code class="language-javascript">use math;
 
 // Mathematical functions
 var result = math.sqrt(16);        // 4
@@ -471,21 +665,22 @@ var power = math.pow(2, 3);        // 8
 var absolute = math.abs(-5);       // 5
 
 // Trigonometric functions
-var sine = math.sin(math.PI / 2);  // 1
+var sine = math.sin(1.57);         // ~1
 var cosine = math.cos(0);          // 1
-var tangent = math.tan(math.PI / 4); // 1
+var tangent = math.tan(0.785);     // ~1
 
 // Logarithmic functions
-var natural_log = math.log(math.E); // 1
-var exponential = math.exp(1);      // 2.718...
+var natural_log = math.log(2.718); // ~1
+var exponential = math.exp(1);     // ~2.718
 
 // Rounding functions
-var ceiling = math.ceil(4.1);       // 5
-var floor = math.floor(4.9);        // 4
-var rounded = math.round(4.5);      // 5</code></pre>
+var ceiling = math.ceil(4.1);      // 5
+var floor = math.floor(4.9);       // 4
+var rounded = math.round(4.5);     // 5</code></pre>
                         </div>
-
-                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">JSON Module</h3>
+                    </section>
+                </div>
+            </main>
                         <p class="text-gray-600 mb-4">
                             The JSON module provides functions for parsing and generating JSON data.
                         </p>
