@@ -74,7 +74,7 @@
                             </div>
                             <span class="ml-4 text-gray-400 text-sm">hello.nt</span>
                         </div>
-                        <pre class="text-gray-300 text-sm overflow-x-auto"><code class="language-javascript">print("Hello, World!");</code></pre>
+                        <pre class="text-gray-300 text-sm overflow-x-auto"><code class="language-javascript">say("Hello, World!");</code></pre>
                     </div>
                 </div>
 
@@ -98,7 +98,7 @@
 }
 
 var message = greet("Neutron");
-print(message);
+say(message);
 
 // Output: Hello, Neutron!</code></pre>
                     </div>
@@ -121,21 +121,23 @@ print(message);
                         </div>
                         <pre class="text-gray-300 text-sm overflow-x-auto"><code class="language-javascript">class Person {
     var name;
+    var age;
 
-    fun setName(name) {
+    fun initialize(name, age) {
         this.name = name;
+        this.age = age;
     }
 
     fun greet() {
-        print("Hello, my name is " + this.name);
+        say("Hello, my name is " + this.name + " and I am " + this.age + " years old.");
     }
 }
 
 var person = Person();
-person.setName("Alice");
+person.initialize("Alice", 30);
 person.greet();
 
-// Output: Hello, my name is Alice</code></pre>
+// Output: Hello, my name is Alice and I am 30 years old.</code></pre>
                     </div>
                 </div>
 
@@ -157,14 +159,21 @@ person.greet();
                         <pre class="text-gray-300 text-sm overflow-x-auto"><code class="language-javascript">var age = 25;
 
 if (age >= 18) {
-    print("You are an adult");
+    say("You are an adult");
 } else {
-    print("You are a minor");
+    say("You are a minor");
 }
 
 // Loop example
 for (var i = 1; i <= 5; i = i + 1) {
-    print("Count: " + i);
+    say("Count: " + i);
+}
+
+// While loop
+var counter = 0;
+while (counter < 3) {
+    say("Counter: " + counter);
+    counter = counter + 1;
 }</code></pre>
                     </div>
                 </div>
@@ -172,8 +181,8 @@ for (var i = 1; i <= 5; i = i + 1) {
                 <!-- Calculator -->
                 <div class="bg-white border border-gray-200 rounded-xl overflow-hidden feature-card">
                     <div class="p-6 border-b border-gray-100">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Simple Calculator</h3>
-                        <p class="text-gray-600">Basic arithmetic operations</p>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Math Module</h3>
+                        <p class="text-gray-600">Using the math module for calculations</p>
                     </div>
                     <div class="bg-gray-900 p-6">
                         <div class="flex items-center mb-4">
@@ -182,35 +191,25 @@ for (var i = 1; i <= 5; i = i + 1) {
                                 <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
                                 <div class="w-3 h-3 bg-green-500 rounded-full"></div>
                             </div>
-                            <span class="ml-4 text-gray-400 text-sm">calculator.nt</span>
+                            <span class="ml-4 text-gray-400 text-sm">math_demo.nt</span>
                         </div>
-                        <pre class="text-gray-300 text-sm overflow-x-auto"><code class="language-javascript">class Calculator {
-    fun add(a, b) {
-        return a + b;
-    }
-    
-    fun subtract(a, b) {
-        return a - b;
-    }
-    
-    fun multiply(a, b) {
-        return a * b;
-    }
-    
-    fun divide(a, b) {
-        if (b != 0) {
-            return a / b;
-        } else {
-            return "Error: Division by zero";
-        }
-    }
-}
+                        <pre class="text-gray-300 text-sm overflow-x-auto"><code class="language-javascript">use math;
 
-var calc = Calculator();
-print(calc.add(10, 5));      // 15
-print(calc.subtract(10, 3)); // 7
-print(calc.multiply(4, 6));  // 24
-print(calc.divide(20, 4));   // 5</code></pre>
+var sum = math.add(5, 3);           // 8
+var diff = math.subtract(10, 4);    // 6
+var product = math.multiply(6, 7);  // 42
+var quotient = math.divide(15, 3);  // 5
+var power = math.pow(2, 3);         // 8
+var root = math.sqrt(16);           // 4
+var absolute = math.abs(-5);        // 5
+
+say("Sum: " + sum);
+say("Difference: " + diff);
+say("Product: " + product);
+say("Quotient: " + quotient);
+say("Power: " + power);
+say("Square root: " + root);
+say("Absolute: " + absolute);</code></pre>
                     </div>
                 </div>
 
@@ -229,22 +228,29 @@ print(calc.divide(20, 4));   // 5</code></pre>
                             </div>
                             <span class="ml-4 text-gray-400 text-sm">modules.nt</span>
                         </div>
-                        <pre class="text-gray-300 text-sm overflow-x-auto"><code class="language-javascript">// Import math module
-import "math";
+                        <pre class="text-gray-300 text-sm overflow-x-auto"><code class="language-javascript">use sys;
+use json;
 
-var radius = 5;
-var area = math.PI * math.pow(radius, 2);
-print("Circle area: " + area);
+// File operations
+sys.write("data.txt", "Hello, Neutron!");
+var content = sys.read("data.txt");
+say("File content: " + content);
 
-var squareRoot = math.sqrt(16);
-print("Square root of 16: " + squareRoot);
+// JSON operations
+var data = {
+  "name": "Alice",
+  "age": 30,
+  "active": true
+};
 
-// Import JSON module
-import "json";
+var jsonStr = json.stringify(data);
+say("JSON: " + jsonStr);
 
-var data = json.parse('{"name": "Neutron", "version": 1.0}');
-print("Language: " + data.name);
-print("Version: " + data.version);</code></pre>
+var parsed = json.parse(jsonStr);
+say("Parsed name: " + parsed["name"]);
+
+// Cleanup
+sys.rm("data.txt");</code></pre>
                     </div>
                 </div>
 
@@ -267,23 +273,25 @@ print("Version: " + data.version);</code></pre>
 var name = "World";
 var message = greeting + ", " + name + "!";
 
-print(message);
-print("Message length: " + len(message));
+say(message);
+say("Message length: " + string_length(message));
 
-// String comparison
-var lang1 = "Neutron";
-var lang2 = "neutron";
+// Character operations
+var char = string_get_char_at(message, 0);  // "H"
+var ascii = char_to_int(char);              // 72
+var backToChar = int_to_char(ascii);        // "H"
 
-if (lang1 == lang2) {
-    print("Same language");
-} else {
-    print("Different case");
-}
+say("First character: " + char);
+say("ASCII value: " + ascii);
+say("Back to char: " + backToChar);
 
-// Working with string properties
-var text = "Neutron Programming Language";
-print("Text: " + text);
-print("Length: " + len(text));</code></pre>
+// Binary conversion
+var number = 10;
+var binary = int_to_bin(number);    // "1010"
+var decimal = bin_to_int(binary);   // 10
+
+say("10 in binary: " + binary);
+say("Binary back to decimal: " + decimal);</code></pre>
                     </div>
                 </div>
 
@@ -312,7 +320,7 @@ print("Length: " + len(text));</code></pre>
 
 // Print first 10 Fibonacci numbers
 for (var i = 0; i < 10; i = i + 1) {
-    print("F(" + i + ") = " + fibonacci(i));
+    say("F(" + i + ") = " + fibonacci(i));
 }
 
 // Output:
@@ -327,6 +335,210 @@ for (var i = 0; i < 10; i = i + 1) {
 // F(8) = 21
 // F(9) = 34</code></pre>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advanced Examples Section -->
+    <section class="bg-gray-50 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Advanced Examples</h2>
+                <p class="text-xl text-gray-600">More complex applications demonstrating Neutron's capabilities</p>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-8">
+                
+                <!-- Object-Oriented Programming -->
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden feature-card">
+                    <div class="p-6 border-b border-gray-100">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Object-Oriented Calculator</h3>
+                        <p class="text-gray-600">Advanced class-based programming with methods and properties</p>
+                    </div>
+                    <div class="bg-gray-900 p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <span class="ml-4 text-gray-400 text-sm">oop_calculator.nt</span>
+                        </div>
+                        <pre class="text-gray-300 text-sm overflow-x-auto"><code class="language-javascript">use math;
+
+class Calculator {
+    var history;
+    
+    fun initialize() {
+        this.history = "Calculator initialized\n";
+    }
+    
+    fun add(a, b) {
+        var result = math.add(a, b);
+        this.history = this.history + "Added " + a + " + " + b + " = " + result + "\n";
+        return result;
+    }
+    
+    fun power(base, exp) {
+        var result = math.pow(base, exp);
+        this.history = this.history + "Power " + base + "^" + exp + " = " + result + "\n";
+        return result;
+    }
+    
+    fun show_history() {
+        say("=== Calculator History ===");
+        say(this.history);
+    }
+}
+
+var calc = Calculator();
+calc.initialize();
+
+var sum = calc.add(15, 25);        // 40
+var power_result = calc.power(2, 10); // 1024
+
+say("Sum: " + sum);
+say("Power: " + power_result);
+calc.show_history();</code></pre>
+                    </div>
+                </div>
+
+                <!-- File Processing Example -->
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden feature-card">
+                    <div class="p-6 border-b border-gray-100">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">File Processing</h3>
+                        <p class="text-gray-600">Working with files, JSON, and system operations</p>
+                    </div>
+                    <div class="bg-gray-900 p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <span class="ml-4 text-gray-400 text-sm">file_processor.nt</span>
+                        </div>
+                        <pre class="text-gray-300 text-sm overflow-x-auto"><code class="language-javascript">use sys;
+use json;
+use time;
+
+class FileProcessor {
+    fun process_data(input_file, output_file) {
+        if (!sys.exists(input_file)) {
+            say("Error: Input file '" + input_file + "' not found");
+            return false;
+        }
+        
+        say("Processing file: " + input_file);
+        
+        // Read input
+        var content = sys.read(input_file);
+        say("Read " + string_length(content) + " characters");
+        
+        // Create processing report
+        var report = {
+            "input_file": input_file,
+            "output_file": output_file,
+            "processed_at": time.now(),
+            "content_length": string_length(content),
+            "status": "completed"
+        };
+        
+        // Write report
+        var report_json = json.stringify(report, true);
+        sys.write(output_file, report_json);
+        
+        say("Processing complete. Report saved to: " + output_file);
+        return true;
+    }
+}
+
+// Create test input file
+sys.write("input.txt", "Sample data for processing.");
+
+// Process the file
+var processor = FileProcessor();
+var success = processor.process_data("input.txt", "report.json");
+
+if (success) {
+    say("File processing successful!");
+    var report_content = sys.read("report.json");
+    say("Generated report:");
+    say(report_content);
+}
+
+// Cleanup
+sys.rm("input.txt");
+sys.rm("report.json");</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Binary Compilation Section -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Binary Compilation</h2>
+                <p class="text-xl text-gray-600">Compile your Neutron scripts to standalone executables</p>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Compilation Process -->
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+                    <div class="p-6 border-b border-gray-100">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Compiling to Binary</h3>
+                        <p class="text-gray-600">Turn your Neutron script into a standalone executable</p>
+                    </div>
+                    <div class="bg-gray-900 p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <span class="ml-4 text-gray-400 text-sm">terminal</span>
+                        </div>
+                        <pre class="text-gray-300 text-sm overflow-x-auto"><code class="language-bash"># Compile your script
+./neutron -b myapp.nt myapp
+
+# Run the compiled binary
+./myapp
+
+# No interpreter needed!
+# The binary includes all necessary code</code></pre>
+                    </div>
+                </div>
+
+                <!-- Benefits -->
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Benefits of Binary Compilation</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mt-1 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700"><strong>Standalone Distribution:</strong> No need to install the Neutron interpreter</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mt-1 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700"><strong>Better Performance:</strong> Optimized compilation with C++ compiler</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mt-1 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700"><strong>Code Protection:</strong> Source code is embedded and not easily readable</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mt-1 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700"><strong>Easy Deployment:</strong> Single executable file for distribution</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
