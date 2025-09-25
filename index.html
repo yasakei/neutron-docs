@@ -149,11 +149,20 @@
                 <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
                     <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
                         <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Binary Compilation</h3>
+                    <p class="text-gray-600">Compile scripts to standalone executables for distribution without requiring the interpreter.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                         </svg>
                     </div>
                     <h3 class="text-xl font-semibold text-gray-900 mb-3">Modular</h3>
-                    <p class="text-gray-600">Organize your code with modules for better structure and reusability.</p>
+                    <p class="text-gray-600">Organize your code with modules for better structure and reusability. Create native C++ extensions.</p>
                 </div>
             </div>
         </div>
@@ -181,19 +190,21 @@
                 </div>
                 <pre class="text-gray-300 text-sm overflow-x-auto"><code class="language-javascript">class Person {
     var name;
+    var age;
 
-    fun setName(name) {
+    fun initialize(name, age) {
         this.name = name;
+        this.age = age;
     }
 
     fun greet() {
-        print("Hello, my name is " + this.name);
+        say("Hello, my name is " + this.name + " and I am " + this.age + " years old.");
     }
 }
 
 var person = Person();
-person.setName("Neutron");
-person.greet(); // Output: Hello, my name is Neutron</code></pre>
+person.initialize("Neutron", 1);
+person.greet(); // Output: Hello, my name is Neutron and I am 1 years old.</code></pre>
             </div>
         </div>
     </section>
