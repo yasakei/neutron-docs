@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bug Tracker - Neutron Programming Language</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="font-inter bg-white text-gray-900">
+    <!-- Navigation -->
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <div class="neutron-logo">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="neutron-icon">
+                              <ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="#3b82f6" stroke-width="3" opacity="0.8"/>
+                              <ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="#3b82f6" stroke-width="3" opacity="0.8" transform="rotate(60 50 50)"/>
+                              <ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="#3b82f6" stroke-width="3" opacity="0.8" transform="rotate(120 50 50)"/>
+                              <circle cx="50" cy="50" r="6" fill="#1e40af"/>
+                            </svg>
+                        </div>
+                        <a href="index.html" class="ml-3 text-xl font-semibold text-gray-900">Neutron</a>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">Home</a>
+                        <a href="docs.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">Docs</a>
+                        <a href="examples.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">Examples</a>
+                        <a href="changelog.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">Changelog</a>
+                        <a href="bug-tracker.html" class="text-gray-900 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">Bug Tracker</a>
+                        <a href="https://github.com/yasakei/neutron" class="bg-gray-900 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors">GitHub</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-500 hover:text-gray-900 focus:outline-none focus:text-gray-900">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t border-gray-200">
+                <a href="index.html" class="text-gray-500 hover:text-gray-900 block px-3 py-2 text-base font-medium">Home</a>
+                <a href="docs.html" class="text-gray-500 hover:text-gray-900 block px-3 py-2 text-base font-medium">Docs</a>
+                <a href="examples.html" class="text-gray-500 hover:text-gray-900 block px-3 py-2 text-base font-medium">Examples</a>
+                <a href="changelog.html" class="text-gray-500 hover:text-gray-900 block px-3 py-2 text-base font-medium">Changelog</a>
+                <a href="bug-tracker.html" class="text-gray-900 block px-3 py-2 text-base font-medium">Bug Tracker</a>
+                <a href="https://github.com/yasakei/neutron" class="text-gray-500 hover:text-gray-900 block px-3 py-2 text-base font-medium">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="bg-gray-50 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                Bug Tracker & Fixes
+            </h1>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Track all reported bugs, their status, and resolutions for the Neutron programming language.
+            </p>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="prose prose-lg max-w-none">
+                <div class="mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6">Neutron Bug Report Log</h2>
+                    <p class="text-gray-600 mb-6">
+                        This page documents all reported bugs in the Neutron programming language, including their status, discovery details, and resolutions.
+                    </p>
+                </div>
+
+                <!-- Bug Report: NEUT-011 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900">[NEUT-011] - Equality Comparison Performance Optimization</h3>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Fixed</span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Discovered On:</span>
+                            <p class="text-gray-600">Wednesday, October 29, 2025 — Linux — Neutron-1.1.1-beta</p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Fixed On:</span>
+                            <p class="text-gray-600">Neutron-1.1.2</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Description:</span>
+                        <p class="text-gray-600 mt-2">
+                            Equality (<code class="bg-gray-100 px-2 py-1 rounded text-sm">==</code>) and inequality (<code class="bg-gray-100 px-2 py-1 rounded text-sm">!=</code>) comparisons previously performed costly string conversions for all types. Optimized to use type-specific comparisons first, falling back to string comparison only for complex types.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Bug Report: NEUT-010 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900">[NEUT-010] - String Interpolation with Non-String Values</h3>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Fixed</span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Discovered On:</span>
+                            <p class="text-gray-600">Wednesday, October 29, 2025 — Linux — Neutron-1.1.1-beta</p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Fixed On:</span>
+                            <p class="text-gray-600">Neutron-1.1.3-beta</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Description:</span>
+                        <p class="text-gray-600 mt-2">
+                            String interpolation using <code class="bg-gray-100 px-2 py-1 rounded text-sm">${...}</code> syntax may not properly handle all value types during expression evaluation, potentially causing runtime errors or unexpected string representations.
+                        </p>
+                    </div>
+                    <div>
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <p class="text-gray-600 mt-2">
+                            Testing confirmed that string interpolation correctly handles all value types (numbers, booleans, nil, arrays, objects) through the existing <code class="bg-gray-100 px-2 py-1 rounded text-sm">Value::toString()</code> implementation. No code changes were necessary.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Bug Report: NEUT-009 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900">[NEUT-009] - Type Safety in Array Operations Not Enforced</h3>
+                        <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-semibold">Deferred</span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Discovered On:</span>
+                            <p class="text-gray-600">Wednesday, October 29, 2025 — Linux — Neutron-1.1.1-beta</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Description:</span>
+                        <p class="text-gray-600 mt-2">
+                            Array methods like <code class="bg-gray-100 px-2 py-1 rounded text-sm">push</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">slice</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">indexOf</code> do not enforce type consistency when used with typed variables, potentially allowing type violations.
+                        </p>
+                    </div>
+                    <div>
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <p class="text-gray-600 mt-2">
+                            Type annotations are currently compile-time only and not tracked at runtime. Implementing runtime type checking for array operations would require significant architectural changes to store and propagate type metadata. Deferred for a future release with proper runtime type system support.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Bug Report: NEUT-008 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900">[NEUT-008] - Module Loading Performance Bottleneck</h3>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Fixed</span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Discovered On:</span>
+                            <p class="text-gray-600">Wednesday, October 29, 2025 — Linux — Neutron-1.1.1-beta</p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Fixed On:</span>
+                            <p class="text-gray-600">Neutron-1.1.3-beta</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Description:</span>
+                        <p class="text-gray-600 mt-2">
+                            Module loading implementation re-scans and re-parses files each time, leading to performance degradation when modules are loaded multiple times in complex applications.
+                        </p>
+                    </div>
+                    <div>
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <p class="text-gray-600 mt-2">
+                            Added <code class="bg-gray-100 px-2 py-1 rounded text-sm">loadedModuleCache</code> hash map to track already-loaded modules. The cache is checked before any module loading operations and updated after successful loads for both built-in and file-based modules, eliminating redundant parsing.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Bug Report: NEUT-007 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900">[NEUT-007] - Array Index Out of Bounds Error Handling</h3>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Fixed</span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Discovered On:</span>
+                            <p class="text-gray-600">Wednesday, October 29, 2025 — Linux — Neutron-1.1.1-beta</p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Fixed On:</span>
+                            <p class="text-gray-600">Neutron-1.1.2</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Description:</span>
+                        <p class="text-gray-600 mt-2">
+                            Array index access has bounds checking but doesn't provide detailed error information about which array or line caused the error, making debugging difficult for users.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Bug Report: NEUT-006 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900">[NEUT-006] - Missing Symbol Operators for Common Operations</h3>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Fixed</span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Discovered On:</span>
+                            <p class="text-gray-600">Wednesday, October 29, 2025 — Linux — Neutron-1.1.1-beta</p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Fixed On:</span>
+                            <p class="text-gray-600">Neutron-1.1.3-beta</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Description:</span>
+                        <p class="text-gray-600 mt-2">
+                            C-style operators <code class="bg-gray-100 px-2 py-1 rounded text-sm">&&</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">||</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">++</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">--</code> are not implemented. The <code class="bg-gray-100 px-2 py-1 rounded text-sm">&&</code> and <code class="bg-gray-100 px-2 py-1 rounded text-sm">||</code> symbol operators have been implemented and work the same as <code class="bg-gray-100 px-2 py-1 rounded text-sm">and</code> and <code class="bg-gray-100 px-2 py-1 rounded text-sm">or</code> keywords. The <code class="bg-gray-100 px-2 py-1 rounded text-sm">++</code> and <code class="bg-gray-100 px-2 py-1 rounded text-sm">--</code> operators require more complex AST changes and remain to be implemented.
+                        </p>
+                    </div>
+                    <div>
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <p class="text-gray-600 mt-2">
+                            Added full parser support for prefix (<code class="bg-gray-100 px-2 py-1 rounded text-sm">++x</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">--x</code>) and postfix (<code class="bg-gray-100 px-2 py-1 rounded text-sm">x++</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">x--</code>) increment/decrement operators. They are desugared to assignment expressions (<code class="bg-gray-100 px-2 py-1 rounded text-sm">x = x + 1</code> or <code class="bg-gray-100 px-2 py-1 rounded text-sm">x = x - 1</code>) during parsing. Both <code class="bg-gray-100 px-2 py-1 rounded text-sm">&&</code>/<code class="bg-gray-100 px-2 py-1 rounded text-sm">||</code> and <code class="bg-gray-100 px-2 py-1 rounded text-sm">++</code>/<code class="bg-gray-100 px-2 py-1 rounded text-sm">--</code> are now fully functional.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Bug Report: NEUT-005 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900">[NEUT-005] - Exception Handling Implementation Inconsistency</h3>
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">Verified Working</span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Discovered On:</span>
+                            <p class="text-gray-600">Wednesday, October 29, 2025 — Linux — Neutron-1.1.1-beta</p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Verified On:</span>
+                            <p class="text-gray-600">Neutron-1.1.3-beta</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Description:</span>
+                        <p class="text-gray-600 mt-2">
+                            Exception handling has been added with TRY/THROW/CATCH opcodes, but the implementation has inconsistent frame management and lacks proper exception re-throwing in finally blocks.
+                        </p>
+                    </div>
+                    <div>
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <p class="text-gray-600 mt-2">
+                            Upon investigation and testing, the exception handling implementation was found to be working as designed. In Neutron's semantics, a try-finally block (without catch) executes the finally block and then consumes the exception rather than re-throwing it. Frame management is consistent and properly synchronized with call frames. All exception handling tests pass successfully.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Bug Report: NEUT-004 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900">[NEUT-004] - Memory Management Issues with Object Heap</h3>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Fixed</span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Discovered On:</span>
+                            <p class="text-gray-600">Wednesday, October 29, 2025 — Linux — Neutron-1.1.1-beta</p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Fixed On:</span>
+                            <p class="text-gray-600">Neutron-1.1.2</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Description:</span>
+                        <p class="text-gray-600 mt-2">
+                            The garbage collector implementation is incomplete with basic marking and sweeping, but lacks proper root finding for complex object relationships, which could lead to memory leaks or premature deallocation. Fixed with improved recursive marking of nested objects and automatic GC triggering.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Bug Report: NEUT-003 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900">[NEUT-003] - Potential Stack Overflow in Complex Expression Evaluation</h3>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Fixed</span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Discovered On:</span>
+                            <p class="text-gray-600">Wednesday, October 29, 2025 — Linux — Neutron-1.1.1-beta</p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Fixed On:</span>
+                            <p class="text-gray-600">Neutron-1.1.3-beta</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Description:</span>
+                        <p class="text-gray-600 mt-2">
+                            Complex nested expressions with multiple operations could potentially cause stack overflow due to the fixed stack size limit of 256 entries without proper bounds checking in all evaluation paths.
+                        </p>
+                    </div>
+                    <div>
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <p class="text-gray-600 mt-2">
+                            Increased the value stack size limit from 256 to 4096 entries in <code class="bg-gray-100 px-2 py-1 rounded text-sm">VM::push()</code> to accommodate complex nested expressions. Call frame recursion depth already has a proper 256-frame limit check in <code class="bg-gray-100 px-2 py-1 rounded text-sm">VM::call()</code> to prevent excessive recursion. Stack overflow checks are in place at all critical points.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Bug Report: NEUT-002 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900">[NEUT-002] - BANG_EQUAL Token Not Properly Implemented in VM</h3>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Fixed</span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Discovered On:</span>
+                            <p class="text-gray-600">Wednesday, October 29, 2025 — Linux — Neutron-1.1.1-beta</p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Fixed On:</span>
+                            <p class="text-gray-600">Neutron-1.1.2</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Description:</span>
+                        <p class="text-gray-600 mt-2">
+                            The BANG_EQUAL token is recognized by the scanner and parsed by the parser, but there's no corresponding bytecode instruction or VM implementation for the <code class="bg-gray-100 px-2 py-1 rounded text-sm">!=</code> operator in the virtual machine. The VM's <code class="bg-gray-100 px-2 py-1 rounded text-sm">OP_EQUAL</code> instruction handles both <code class="bg-gray-100 px-2 py-1 rounded text-sm">==</code> and <code class="bg-gray-100 px-2 py-1 rounded text-sm">!=</code> operations incorrectly.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Bug Report: NEUT-001 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900">[NEUT-001] - Not-Equal Operator (!=) Produces Incorrect Results</h3>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Fixed</span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Discovered On:</span>
+                            <p class="text-gray-600">Wednesday, October 29, 2025 — Linux — Neutron-1.1.1-beta</p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Fixed On:</span>
+                            <p class="text-gray-600">Neutron-1.1.2</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Description:</span>
+                        <p class="text-gray-600 mt-2">
+                            The <code class="bg-gray-100 px-2 py-1 rounded text-sm">!=</code> operator produces inverted/incorrect boolean results in comparisons, as it is compiled to the same bytecode as <code class="bg-gray-100 px-2 py-1 rounded text-sm">==</code> (<code class="bg-gray-100 px-2 py-1 rounded text-sm">OP_EQUAL</code>), causing logical errors in program execution.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Report a Bug Section -->
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-8 mt-12">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Report a Bug</h3>
+                    <p class="text-gray-600 mb-4">
+                        Found a bug in Neutron? Please report it on our GitHub Issues page:
+                    </p>
+                    <a href="https://github.com/yasakei/neutron/issues" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                        Report an Issue
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16 mt-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="neutron-logo">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="neutron-icon w-8 h-8">
+                              <ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="#3b82f6" stroke-width="3" opacity="0.8"/>
+                              <ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="#3b82f6" stroke-width="3" opacity="0.8" transform="rotate(60 50 50)"/>
+                              <ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="#3b82f6" stroke-width="3" opacity="0.8" transform="rotate(120 50 50)"/>
+                              <circle cx="50" cy="50" r="6" fill="#1e40af"/>
+                            </svg>
+                        </div>
+                        <span class="ml-3 text-xl font-semibold">Neutron</span>
+                    </div>
+                    <p class="text-gray-400">A modern programming language for the future.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Documentation</h3>
+                    <ul class="space-y-2">
+                        <li><a href="docs.html" class="text-gray-400 hover:text-white transition-colors">Language Reference</a></li>
+                        <li><a href="examples.html" class="text-gray-400 hover:text-white transition-colors">Examples</a></li>
+                        <li><a href="changelog.html" class="text-gray-400 hover:text-white transition-colors">Changelog</a></li>
+                        <li><a href="bug-tracker.html" class="text-gray-400 hover:text-white transition-colors">Bug Tracker</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Community</h3>
+                    <ul class="space-y-2">
+                        <li><a href="https://github.com/yasakei/neutron" class="text-gray-400 hover:text-white transition-colors">GitHub</a></li>
+                        <li><a href="https://github.com/yasakei/neutron/issues" class="text-gray-400 hover:text-white transition-colors">Issues</a></li>
+                        <li><a href="https://github.com/yasakei/neutron/discussions" class="text-gray-400 hover:text-white transition-colors">Discussions</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Project</h3>
+                    <ul class="space-y-2">
+                        <li><a href="https://github.com/yasakei" class="text-gray-400 hover:text-white transition-colors">Creator</a></li>
+                        <li><span class="text-gray-400">Version: 1.1.2-beta</span></li>
+                        <li><span class="text-gray-400">License: Neutron Public License 1.0</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p class="text-gray-400">&copy; 2025 yasakei. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

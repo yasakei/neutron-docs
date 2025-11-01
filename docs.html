@@ -34,7 +34,8 @@
                         <a href="index.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">Home</a>
                         <a href="docs.html" class="text-gray-900 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">Docs</a>
                         <a href="examples.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">Examples</a>
-                        <a href="index.html#performance" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">Performance</a>
+                        <a href="changelog.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">Changelog</a>
+                        <a href="bug-tracker.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">Bug Tracker</a>
                         <a href="https://github.com/yasakei/neutron" class="bg-gray-900 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors">GitHub</a>
                     </div>
                 </div>
@@ -63,6 +64,17 @@
                         <a href="#binary-compilation" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors">Binary Compilation</a>
                         <a href="#module-creation" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors">Module Creation</a>
                         <a href="#known-issues" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors">Known Issues</a>
+                        <hr class="my-4 border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4 mt-4">Advanced</h3>
+                        <a href="#exception-handling" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors">Exception Handling</a>
+                        <a href="#type-system" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors">Type System</a>
+                        <a href="#advanced-modules" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors">Advanced Modules</a>
+                        <a href="#build-deployment" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors">Build & Deployment</a>
+                        <a href="#learning-resources" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors">Learning Resources</a>
+                        <hr class="my-4 border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4 mt-4">Additional</h3>
+                        <a href="changelog.html" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors">Changelog</a>
+                        <a href="bug-tracker.html" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors">Bug Tracker</a>
                     </nav>
                 </div>
             </aside>
@@ -879,6 +891,290 @@ say(info.platform);  // Works
                             <li>Keep else-if chains reasonable (&lt;10 levels)</li>
                             <li>Test complex array indexing thoroughly</li>
                         </ul>
+                    </section>
+
+                    <!-- Exception Handling -->
+                    <section id="exception-handling" class="mb-16">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-6">Exception Handling</h2>
+                        <p class="text-gray-600 mb-6">
+                            Neutron supports exception handling with try-catch-finally blocks for robust error handling.
+                        </p>
+                        
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Try-Catch Statement</h3>
+                        <div class="bg-gray-900 rounded-xl p-6 mb-6">
+                            <pre class="text-gray-300 text-sm"><code class="language-javascript">try {
+    // code that might throw an exception
+    riskyOperation();
+} catch (error) {
+    // code to handle the exception
+    say("Exception caught: " + error);
+}</code></pre>
+                        </div>
+
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Try-Finally Statement</h3>
+                        <div class="bg-gray-900 rounded-xl p-6 mb-6">
+                            <pre class="text-gray-300 text-sm"><code class="language-javascript">try {
+    // code that might throw an exception
+    doSomething();
+} finally {
+    // code that always executes (cleanup, etc.)
+    cleanup();
+}</code></pre>
+                        </div>
+
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Try-Catch-Finally Statement</h3>
+                        <div class="bg-gray-900 rounded-xl p-6 mb-6">
+                            <pre class="text-gray-300 text-sm"><code class="language-javascript">try {
+    // code that might throw an exception
+    riskyOperation();
+} catch (error) {
+    // code to handle the exception
+    say("Exception caught: " + error);
+} finally {
+    // code that always executes
+    cleanup();
+}</code></pre>
+                        </div>
+
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Throw Statement</h3>
+                        <p class="text-gray-600 mb-4">
+                            You can throw any value as an exception.
+                        </p>
+                        <div class="bg-gray-900 rounded-xl p-6 mb-6">
+                            <pre class="text-gray-300 text-sm"><code class="language-javascript">throw "An error occurred";
+throw someValue;  // Can throw any value
+
+try {
+    if (x < 0) {
+        throw "Negative value not allowed";
+    }
+} catch (error) {
+    say("Error: " + error);
+}</code></pre>
+                        </div>
+                    </section>
+
+                    <!-- Type System -->
+                    <section id="type-system" class="mb-16">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-6">Type System</h2>
+                        <p class="text-gray-600 mb-6">
+                            Neutron uses a <strong>dynamically typed</strong> system with runtime type checking. Variables can hold values of any type and can be reassigned to different types.
+                        </p>
+
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">All Value Types</h3>
+                        <div class="grid md:grid-cols-2 gap-6 mb-8">
+                            <div class="bg-white border border-gray-200 rounded-lg p-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-3">Primitive Types</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li><strong>NIL:</strong> Absence of value (<code class="bg-gray-100 px-2 py-1 rounded text-xs">nil</code>)</li>
+                                    <li><strong>BOOLEAN:</strong> True or false</li>
+                                    <li><strong>NUMBER:</strong> 64-bit floating point</li>
+                                    <li><strong>STRING:</strong> UTF-8 text</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white border border-gray-200 rounded-lg p-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-3">Complex Types</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li><strong>ARRAY:</strong> Dynamic ordered collection</li>
+                                    <li><strong>OBJECT:</strong> Key-value pairs</li>
+                                    <li><strong>FUNCTION:</strong> Callable functions</li>
+                                    <li><strong>CLASS:</strong> Class definitions</li>
+                                    <li><strong>INSTANCE:</strong> Class instances</li>
+                                    <li><strong>MODULE:</strong> Imported modules</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Type Conversions</h3>
+                        <p class="text-gray-600 mb-4">
+                            Use the <code class="bg-gray-100 px-2 py-1 rounded text-sm">fmt</code> module for explicit type conversions.
+                        </p>
+                        <div class="bg-gray-900 rounded-xl p-6 mb-6">
+                            <pre class="text-gray-300 text-sm"><code class="language-javascript">use fmt;
+
+var str = fmt.to_str(42);         // "42"
+var num = fmt.to_float("3.14");   // 3.14
+var int_val = fmt.to_int("123");  // 123
+
+// Type checking
+var type = fmt.type(value);       // Returns type as string</code></pre>
+                        </div>
+
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Truthiness Rules</h3>
+                        <div class="bg-white border border-gray-200 rounded-lg p-6 mb-6">
+                            <table class="w-full text-sm">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="text-left p-2 font-semibold">Type</th>
+                                        <th class="text-left p-2 font-semibold">Truthy</th>
+                                        <th class="text-left p-2 font-semibold">Falsy</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-gray-600">
+                                    <tr><td class="p-2">NIL</td><td class="p-2">-</td><td class="p-2"><code class="bg-gray-100 px-2 py-1 rounded text-xs">nil</code></td></tr>
+                                    <tr><td class="p-2">BOOLEAN</td><td class="p-2"><code class="bg-gray-100 px-2 py-1 rounded text-xs">true</code></td><td class="p-2"><code class="bg-gray-100 px-2 py-1 rounded text-xs">false</code></td></tr>
+                                    <tr><td class="p-2">NUMBER</td><td class="p-2">All except 0</td><td class="p-2"><code class="bg-gray-100 px-2 py-1 rounded text-xs">0</code>, <code class="bg-gray-100 px-2 py-1 rounded text-xs">0.0</code></td></tr>
+                                    <tr><td class="p-2">STRING</td><td class="p-2">Non-empty</td><td class="p-2"><code class="bg-gray-100 px-2 py-1 rounded text-xs">""</code></td></tr>
+                                    <tr><td class="p-2">ARRAY/OBJECT/etc</td><td class="p-2">All (even empty)</td><td class="p-2">-</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Memory Management</h3>
+                        <p class="text-gray-600 mb-4">
+                            Neutron uses automatic garbage collection for memory management. Objects are collected when no longer reachable.
+                        </p>
+                        <ul class="list-disc list-inside text-gray-600 space-y-2 mb-6">
+                            <li><strong>Stack-allocated:</strong> NIL, BOOLEAN, NUMBER (no heap overhead)</li>
+                            <li><strong>Heap-allocated:</strong> STRING, ARRAY, OBJECT, FUNCTION, CLASS, INSTANCE, MODULE</li>
+                            <li><strong>GC Algorithm:</strong> Mark-and-sweep garbage collection</li>
+                            <li><strong>Trigger:</strong> Automatic when heap exceeds threshold</li>
+                        </ul>
+                    </section>
+
+                    <!-- Advanced Modules -->
+                    <section id="advanced-modules" class="mb-16">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-6">Advanced Modules</h2>
+                        
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Arrays Module</h3>
+                        <p class="text-gray-600 mb-4">
+                            The <code class="bg-gray-100 px-2 py-1 rounded text-sm">arrays</code> module provides comprehensive array manipulation functions.
+                        </p>
+                        <div class="bg-gray-900 rounded-xl p-6 mb-6">
+                            <pre class="text-gray-300 text-sm"><code class="language-javascript">use arrays;
+
+var arr = arrays.new();           // Create new array
+arrays.push(arr, 1);               // Add element
+arrays.push(arr, 2);
+arrays.push(arr, 3);
+
+var len = arrays.length(arr);      // Get length
+var item = arrays.at(arr, 0);      // Get element at index
+arrays.set(arr, 0, 10);            // Set element at index
+
+var slice = arrays.slice(arr, 0, 2);  // Create subarray
+var str = arrays.join(arr, ", ");     // Join to string
+arrays.reverse(arr);                  // Reverse in place
+var idx = arrays.index_of(arr, 2);    // Find index
+
+// Advanced operations
+var clone = arrays.clone(arr);        // Shallow copy
+var flat = arrays.flat(nested);       // Flatten nested arrays
+arrays.shuffle(arr);                  // Randomly shuffle</code></pre>
+                        </div>
+
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Async Module</h3>
+                        <p class="text-gray-600 mb-4">
+                            The <code class="bg-gray-100 px-2 py-1 rounded text-sm">async</code> module provides basic asynchronous operations.
+                        </p>
+                        <div class="bg-gray-900 rounded-xl p-6 mb-6">
+                            <pre class="text-gray-300 text-sm"><code class="language-javascript">use async;
+use time;
+
+// Simulate async operation
+fun fetchData() {
+    time.sleep(1000);  // Simulate delay
+    return "Data fetched!";
+}
+
+var result = fetchData();
+say(result);</code></pre>
+                        </div>
+                    </section>
+
+                    <!-- Build and Deployment -->
+                    <section id="build-deployment" class="mb-16">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-6">Build & Deployment</h2>
+                        
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Quick Start</h3>
+                        <div class="bg-gray-900 rounded-xl p-6 mb-6">
+                            <pre class="text-gray-300 text-sm"><code class="language-bash"># Clone the repository
+git clone https://github.com/yasakei/neutron.git
+cd neutron
+
+# Build the interpreter
+make
+
+# Run a Neutron program
+./neutron examples/hello.nt
+
+# Run the REPL
+./neutron</code></pre>
+                        </div>
+
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Cross-Platform Support</h3>
+                        <p class="text-gray-600 mb-4">
+                            Neutron supports multiple platforms with consistent behavior.
+                        </p>
+                        <div class="grid md:grid-cols-3 gap-6 mb-6">
+                            <div class="bg-white border border-gray-200 rounded-lg p-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-3">Linux</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>✓ GCC 7+ or Clang 6+</li>
+                                    <li>✓ CMake 3.15+</li>
+                                    <li>✓ Full support</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white border border-gray-200 rounded-lg p-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-3">macOS</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>✓ Apple Clang 11+</li>
+                                    <li>✓ CMake 3.15+</li>
+                                    <li>✓ Full support</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white border border-gray-200 rounded-lg p-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-3">Windows</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>✓ MSVC 2019+</li>
+                                    <li>✓ MINGW64</li>
+                                    <li>✓ Full support</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Testing</h3>
+                        <p class="text-gray-600 mb-4">
+                            Neutron includes a comprehensive test suite to verify functionality.
+                        </p>
+                        <div class="bg-gray-900 rounded-xl p-6 mb-6">
+                            <pre class="text-gray-300 text-sm"><code class="language-bash"># Run all tests
+make test
+
+# Run specific test file
+./neutron tests/test_arrays.nt
+
+# Run test suite script
+./run_tests.sh    # Linux/macOS
+./run_tests.ps1   # Windows</code></pre>
+                        </div>
+                    </section>
+
+                    <!-- Learning Resources -->
+                    <section id="learning-resources" class="mb-16">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-6">Learning Resources</h2>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-white border border-gray-200 rounded-lg p-6">
+                                <h3 class="text-xl font-semibold text-gray-900 mb-3">📚 Documentation</h3>
+                                <ul class="text-gray-600 space-y-2">
+                                    <li><a href="https://github.com/yasakei/neutron/blob/main/docs/guides/QUICKSTART.md" class="text-blue-600 hover:text-blue-800">Quick Start Guide</a></li>
+                                    <li><a href="https://github.com/yasakei/neutron/blob/main/docs/guides/BUILD.md" class="text-blue-600 hover:text-blue-800">Build Instructions</a></li>
+                                    <li><a href="https://github.com/yasakei/neutron/blob/main/docs/reference/language_reference.md" class="text-blue-600 hover:text-blue-800">Complete Language Reference</a></li>
+                                    <li><a href="https://github.com/yasakei/neutron/blob/main/docs/modules/README.md" class="text-blue-600 hover:text-blue-800">Module Documentation</a></li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-white border border-gray-200 rounded-lg p-6">
+                                <h3 class="text-xl font-semibold text-gray-900 mb-3">🔧 Advanced Topics</h3>
+                                <ul class="text-gray-600 space-y-2">
+                                    <li><a href="https://github.com/yasakei/neutron/blob/main/docs/reference/box_modules.md" class="text-blue-600 hover:text-blue-800">Box Package Manager</a></li>
+                                    <li><a href="https://github.com/yasakei/neutron/blob/main/docs/extending_neutron.md" class="text-blue-600 hover:text-blue-800">Extending Neutron</a></li>
+                                    <li><a href="https://github.com/yasakei/neutron/blob/main/docs/type_system.md" class="text-blue-600 hover:text-blue-800">Type System Details</a></li>
+                                    <li><a href="https://github.com/yasakei/neutron/blob/main/docs/EXCEPTION_HANDLING.md" class="text-blue-600 hover:text-blue-800">Exception Handling</a></li>
+                                </ul>
+                            </div>
+                        </div>
                     </section>                </div>
             </main>
         </div>
@@ -907,7 +1203,8 @@ say(info.platform);  // Works
                     <ul class="space-y-2">
                         <li><a href="docs.html" class="text-gray-400 hover:text-white transition-colors">Language Reference</a></li>
                         <li><a href="examples.html" class="text-gray-400 hover:text-white transition-colors">Examples</a></li>
-                        <li><a href="index.html#performance" class="text-gray-400 hover:text-white transition-colors">Performance</a></li>
+                        <li><a href="changelog.html" class="text-gray-400 hover:text-white transition-colors">Changelog</a></li>
+                        <li><a href="bug-tracker.html" class="text-gray-400 hover:text-white transition-colors">Bug Tracker</a></li>
                     </ul>
                 </div>
                 <div>
@@ -922,8 +1219,8 @@ say(info.platform);  // Works
                     <h3 class="text-lg font-semibold mb-4">Project</h3>
                     <ul class="space-y-2">
                         <li><a href="https://github.com/yasakei" class="text-gray-400 hover:text-white transition-colors">Creator</a></li>
-                        <li><span class="text-gray-400">Version: Alpha</span></li>
-                        <li><span class="text-gray-400">License: MIT</span></li>
+                        <li><span class="text-gray-400">Version: 1.1.2-beta</span></li>
+                        <li><span class="text-gray-400">License: Neutron Public License 1.0</span></li>
                     </ul>
                 </div>
             </div>
