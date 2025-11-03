@@ -166,6 +166,30 @@ a:focus, button:focus {
   }
 }
 
+/* Documentation sidebar scrolling */
+aside nav {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db #f3f4f6;
+}
+
+aside nav::-webkit-scrollbar {
+  width: 6px;
+}
+
+aside nav::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 3px;
+}
+
+aside nav::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+aside nav::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
 /* Neutron Icon Styles */
 .neutron-icon {
   width: 100%;

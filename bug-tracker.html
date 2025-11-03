@@ -34,6 +34,7 @@
                         <a href="index.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">Home</a>
                         <a href="docs.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">Docs</a>
                         <a href="examples.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">Examples</a>
+                        <a href="benchmarks.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">Benchmarks</a>
                         <a href="changelog.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">Changelog</a>
                         <a href="bug-tracker.html" class="text-gray-900 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">Bug Tracker</a>
                         <a href="https://github.com/yasakei/neutron" class="bg-gray-900 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors">GitHub</a>
@@ -54,6 +55,7 @@
                 <a href="index.html" class="text-gray-500 hover:text-gray-900 block px-3 py-2 text-base font-medium">Home</a>
                 <a href="docs.html" class="text-gray-500 hover:text-gray-900 block px-3 py-2 text-base font-medium">Docs</a>
                 <a href="examples.html" class="text-gray-500 hover:text-gray-900 block px-3 py-2 text-base font-medium">Examples</a>
+                <a href="benchmarks.html" class="text-gray-500 hover:text-gray-900 block px-3 py-2 text-base font-medium">Benchmarks</a>
                 <a href="changelog.html" class="text-gray-500 hover:text-gray-900 block px-3 py-2 text-base font-medium">Changelog</a>
                 <a href="bug-tracker.html" class="text-gray-900 block px-3 py-2 text-base font-medium">Bug Tracker</a>
                 <a href="https://github.com/yasakei/neutron" class="text-gray-500 hover:text-gray-900 block px-3 py-2 text-base font-medium">GitHub</a>
@@ -84,6 +86,312 @@
                     </p>
                 </div>
 
+<!-- Found 20 bug reports -->
+
+                <!-- Bug Report: NEUT-020 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900">[NEUT-020] - Recursive Functions Return Function Objects Instead of Values</h3>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Fixed</span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Discovered On:</span>
+                            <p class="text-gray-600">Sunday, November 3, 2025 — Linux — Neutron-1.2.1-beta</p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Fixed On:</span>
+                            <p class="text-gray-600">Sunday, November 3, 2025 — Neutron-1.2.1</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Description:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">When a function called itself recursively, the return value was a function object (e.g., <code class="bg-gray-100 px-2 py-1 rounded text-sm"><fn factorial></code>) instead of the computed numeric value. This made all recursive algorithms impossible to implement. Example:
+<pre class="bg-gray-900 rounded-lg p-4 my-4 overflow-x-auto"><code class="text-gray-300 text-sm">fun factorial(n) {
+    if (n <= 1) {
+        return 1;
+    }
+    var sub_result = factorial(n - 1);  // Returns <fn factorial> instead of number
+    return n * sub_result;  // RuntimeError: Operands must be numbers
+}</code></pre>
+After the initial fix for regular functions, calling methods on objects within loops caused segfaults:
+<pre class="bg-gray-900 rounded-lg p-4 my-4 overflow-x-auto"><code class="text-gray-300 text-sm">var i = 0;
+while (i < 10) {
+    var p = Person();
+    p.initialize("Name");  // Segfault - stack corruption
+    i = i + 1;
+}</code></pre></p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">1. **Added <code class="bg-gray-100 px-2 py-1 rounded text-sm">isBoundMethod</code> flag to CallFrame** (<code class="bg-gray-100 px-2 py-1 rounded text-sm">include/vm.h</code>):
+<ul class="list-disc list-inside space-y-2 mt-2">
+<li class="text-gray-600">New boolean field to distinguish between regular function calls and bound method calls</li>
+<li class="text-gray-600">Initialized to <code class="bg-gray-100 px-2 py-1 rounded text-sm">false</code> by default in CallFrame constructor</li>
+</ul>
+2. **Mark bound method calls** (<code class="bg-gray-100 px-2 py-1 rounded text-sm">src/vm.cpp</code> line ~227):
+<ul class="list-disc list-inside space-y-2 mt-2">
+<li class="text-gray-600">Set <code class="bg-gray-100 px-2 py-1 rounded text-sm">frame->isBoundMethod = true</code> when calling bound methods in <code class="bg-gray-100 px-2 py-1 rounded text-sm">VM::callValue()</code></li>
+<li class="text-gray-600">Regular function calls leave it as <code class="bg-gray-100 px-2 py-1 rounded text-sm">false</code></li>
+</ul>
+3. **Fixed OP_RETURN stack cleanup** (<code class="bg-gray-100 px-2 py-1 rounded text-sm">src/vm.cpp</code> line ~549):
+<ul class="list-disc list-inside space-y-2 mt-2">
+<li class="text-gray-600">For **bound methods**: <code class="bg-gray-100 px-2 py-1 rounded text-sm">stack.resize(return_slot_offset)</code> - keeps everything before receiver</li>
+<li class="text-gray-600">For **regular functions**: <code class="bg-gray-100 px-2 py-1 rounded text-sm">stack.resize(return_slot_offset - 1)</code> - removes callee + arguments</li>
+<li class="text-gray-600">Added safety check for <code class="bg-gray-100 px-2 py-1 rounded text-sm">return_slot_offset == 0</code> case</li>
+</ul>
+**Stack Layout Analysis:**
+<pre class="bg-gray-900 rounded-lg p-4 my-4 overflow-x-auto"><code class="text-gray-300 text-sm">Regular Function Call:
+  Before: [outer_vars | callee | arg1 | arg2]
+                        ^slot_offset points to arg1
+  After:  [outer_vars | result]
+          Resize to (slot_offset - 1) to remove callee
+Bound Method Call:
+  Before: [outer_vars | receiver | arg1 | arg2]  
+                        ^slot_offset points to receiver (acts as arg0)
+  After:  [outer_vars | result]
+          Resize to (slot_offset) to keep outer_vars intact</code></pre></p>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="text-sm font-semibold text-gray-700">Impact:</span>
+                        <div class="mt-2">
+                            <ul class="list-disc list-inside space-y-2 mt-2">
+<li class="text-gray-600">✅ Recursive functions now work correctly (factorial, fibonacci, power, etc.)</li>
+<li class="text-gray-600">✅ Methods can be called on objects within loops without crashes</li>
+<li class="text-gray-600">✅ All 49 unit tests pass</li>
+<li class="text-gray-600">✅ Enabled 3 new benchmarks (recursion, dict_ops, nested_loops)</li>
+<li class="text-gray-600">✅ Benchmark win rate improved from 66.7% to 91.6% (11 out of 12 benchmarks)</li>
+</ul>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Bug Report: NEUT-019 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900">[NEUT-019] - Runtime Errors Missing Line Numbers</h3>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Fixed</span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Discovered On:</span>
+                            <p class="text-gray-600">Sunday, November 3, 2025 — Linux — Neutron-1.2.1-beta</p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Fixed On:</span>
+                            <p class="text-gray-600">Sunday, November 3, 2025 — Neutron-1.2.1</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Description:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Runtime errors did not display line numbers in error messages. When errors occurred, users saw messages like "RuntimeError in file.nt: Division by zero." without any indication of which line caused the problem. The error handler tried to display line numbers using <code class="bg-gray-100 px-2 py-1 rounded text-sm">frame->currentLine</code>, but this was always -1 because the VM never updated it from the bytecode. The bytecode itself contained line 0 for all instructions because the compiler never tracked source line numbers.</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">1. Added <code class="bg-gray-100 px-2 py-1 rounded text-sm">int currentLine</code> field to the Compiler class to track the current source line being compiled
+2. Initialized <code class="bg-gray-100 px-2 py-1 rounded text-sm">currentLine = 1</code> in Compiler constructors  
+3. Updated <code class="bg-gray-100 px-2 py-1 rounded text-sm">Compiler::emitByte()</code> to use <code class="bg-gray-100 px-2 py-1 rounded text-sm">chunk->write(byte, currentLine)</code> instead of <code class="bg-gray-100 px-2 py-1 rounded text-sm">chunk->write(byte, 0)</code>
+4. Updated key visitor methods (visitBinaryExpr, visitUnaryExpr, visitVariableExpr, visitVarStmt) to extract line numbers from Token fields and update <code class="bg-gray-100 px-2 py-1 rounded text-sm">currentLine</code>
+5. Modified <code class="bg-gray-100 px-2 py-1 rounded text-sm">VM::run()</code> to read line numbers from <code class="bg-gray-100 px-2 py-1 rounded text-sm">chunk->lines[]</code> array before each instruction and update <code class="bg-gray-100 px-2 py-1 rounded text-sm">frame->currentLine</code>
+6. Fixed 43 runtime error calls to pass <code class="bg-gray-100 px-2 py-1 rounded text-sm">frame->currentLine</code> instead of -1
+All runtime errors now display accurate line numbers with source code context. Example output:
+<pre class="bg-gray-900 rounded-lg p-4 my-4 overflow-x-auto"><code class="text-gray-300 text-sm">RuntimeError in /tmp/test.nt at line 8:
+  Division by zero.
+   8 | var z = x / y;  // Should show line 8 in error
+Stack trace:
+  at <script> (/tmp/test.nt:8)</code></pre></p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Bug Report: NEUT-018 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900">[NEUT-018] - Memory Leak in C API Native Function Wrapper</h3>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Fixed</span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Discovered On:</span>
+                            <p class="text-gray-600">Saturday, November 2, 2025 — Linux — Neutron-1.1.3-beta</p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Fixed On:</span>
+                            <p class="text-gray-600">Saturday, November 2, 2025 — Neutron-1.2.1</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Description:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">In <code class="bg-gray-100 px-2 py-1 rounded text-sm">src/capi.cpp</code>, the <code class="bg-gray-100 px-2 py-1 rounded text-sm">CNativeFn::call()</code> function explicitly leaks memory from C function results to prevent cross-library deallocation issues. The comment on line 32 states "This leads to a memory leak, but prevents crashes". Every call to a C API function allocates a <code class="bg-gray-100 px-2 py-1 rounded text-sm">NeutronValue*</code> that is never freed, causing memory to accumulate over time in applications that frequently call C API functions. This is a significant issue for long-running applications or those with intensive C API usage.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Bug Report: NEUT-017 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900">[NEUT-017] - Unsafe Dynamic Casts Without Null Checks</h3>
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">Verified Working</span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Discovered On:</span>
+                            <p class="text-gray-600">Saturday, November 2, 2025 — Linux — Neutron-1.1.3-beta</p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Verified On:</span>
+                            <p class="text-gray-600">Saturday, November 2, 2025 — Neutron-1.2.1</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Description:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Multiple <code class="bg-gray-100 px-2 py-1 rounded text-sm">dynamic_cast</code> operations in <code class="bg-gray-100 px-2 py-1 rounded text-sm">src/vm.cpp</code> (lines 854, 892, 911, 930, 960, etc.) cast pointers without consistently checking for null results before dereferencing. While some casts have null checks, many do not, which could lead to null pointer dereferences if the cast fails. Examples include casting to <code class="bg-gray-100 px-2 py-1 rounded text-sm">Function*</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">Array*</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">Instance*</code>, and <code class="bg-gray-100 px-2 py-1 rounded text-sm">JsonObject*</code> types. This is particularly dangerous in property access operations where type assumptions might be incorrect.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Bug Report: NEUT-016 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900">[NEUT-016] - Constant Pool Overflow Silently Fails</h3>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Fixed</span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Discovered On:</span>
+                            <p class="text-gray-600">Saturday, November 2, 2025 — Linux — Neutron-1.1.3-beta</p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Fixed On:</span>
+                            <p class="text-gray-600">Saturday, November 2, 2025 — Neutron-1.2.1</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Description:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">In <code class="bg-gray-100 px-2 py-1 rounded text-sm">src/compiler/compiler.cpp</code> line 73, the <code class="bg-gray-100 px-2 py-1 rounded text-sm">makeConstant()</code> function checks if the constant pool exceeds <code class="bg-gray-100 px-2 py-1 rounded text-sm">UINT8_MAX</code> (255 constants), but instead of properly reporting an error, it simply returns 0 and continues execution. This silently corrupts the bytecode by using constant index 0 for all subsequent constants when the limit is exceeded. Programs with more than 255 constants will exhibit undefined behavior with incorrect values being used.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Bug Report: NEUT-015 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900">[NEUT-015] - Jump Offset Overflow Has No Error Handling</h3>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Fixed</span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Discovered On:</span>
+                            <p class="text-gray-600">Saturday, November 2, 2025 — Linux — Neutron-1.1.3-beta</p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Fixed On:</span>
+                            <p class="text-gray-600">Saturday, November 2, 2025 — Neutron-1.2.1</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Description:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">In <code class="bg-gray-100 px-2 py-1 rounded text-sm">src/compiler/compiler.cpp</code> lines 95-96 and 108-109, the code checks if jump offsets exceed <code class="bg-gray-100 px-2 py-1 rounded text-sm">UINT16_MAX</code> but the error reporting code is commented out with <code class="bg-gray-100 px-2 py-1 rounded text-sm">// error("Too much code to jump over.")</code> and <code class="bg-gray-100 px-2 py-1 rounded text-sm">// error("Loop body too large.")</code>. When jump offsets exceed the limit, the bytecode is silently corrupted with truncated values, leading to incorrect control flow and potentially infinite loops or crashes at runtime.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Bug Report: NEUT-014 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900">[NEUT-014] - Unsafe Static Cast in Parser Without Type Verification</h3>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Fixed</span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Discovered On:</span>
+                            <p class="text-gray-600">Saturday, November 2, 2025 — Linux — Neutron-1.1.3-beta</p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Fixed On:</span>
+                            <p class="text-gray-600">Saturday, November 2, 2025 — Neutron-1.2.1</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Description:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">In <code class="bg-gray-100 px-2 py-1 rounded text-sm">src/compiler/parser.cpp</code> line 175, there's a <code class="bg-gray-100 px-2 py-1 rounded text-sm">static_cast<LiteralExpr*></code> that assumes the expression is a <code class="bg-gray-100 px-2 py-1 rounded text-sm">LiteralExpr</code> without verification. This cast is used for type checking during variable declarations, but if the initializer is not actually a <code class="bg-gray-100 px-2 py-1 rounded text-sm">LiteralExpr</code> (e.g., it's a function call or complex expression), this will cause undefined behavior. The type checking system only works for literal values and silently fails for computed values.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Bug Report: NEUT-013 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900">[NEUT-013] - Missing Bounds Check in READ_CONSTANT Macro</h3>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Fixed</span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Discovered On:</span>
+                            <p class="text-gray-600">Saturday, November 2, 2025 — Linux — Neutron-1.1.3-beta</p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Fixed On:</span>
+                            <p class="text-gray-600">Saturday, November 2, 2025 — Neutron-1.2.1</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Description:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">The <code class="bg-gray-100 px-2 py-1 rounded text-sm">READ_CONSTANT</code> macro in <code class="bg-gray-100 px-2 py-1 rounded text-sm">src/vm.cpp</code> line 534 accesses the constants array using <code class="bg-gray-100 px-2 py-1 rounded text-sm">READ_BYTE()</code> as an index without bounds checking. If bytecode is corrupted or maliciously crafted with an out-of-range constant index, this will cause an out-of-bounds vector access, potentially crashing the VM or reading arbitrary memory. This is a security concern as well as a stability issue.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Bug Report: NEUT-012 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900">[NEUT-012] - Recursive Function Calls in Binary Operations Display Function Objects</h3>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Fixed</span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Discovered On:</span>
+                            <p class="text-gray-600">Saturday, November 2, 2025 — Linux — Neutron-1.1.3-beta</p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Fixed On:</span>
+                            <p class="text-gray-600">Neutron-1.2.1</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Description:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">When recursive functions are called within binary operations (e.g., <code class="bg-gray-100 px-2 py-1 rounded text-sm">func() + func()</code>), 
+the interpreter incorrectly displays function objects as <code class="bg-gray-100 px-2 py-1 rounded text-sm"><fn name></code> instead of properly 
+evaluating the function returns. This occurred due to improper stack management during 
+nested function calls in expression evaluation contexts, where the return value of one 
+function call interfered with the operand resolution of the next function call.</p>
+                        </div>
+                    </div>
+                </div>
+
+
                 <!-- Bug Report: NEUT-011 -->
                 <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
                     <div class="flex items-start justify-between mb-4">
@@ -102,11 +410,15 @@
                     </div>
                     <div class="mb-4">
                         <span class="text-sm font-semibold text-gray-700">Description:</span>
-                        <p class="text-gray-600 mt-2">
-                            Equality (<code class="bg-gray-100 px-2 py-1 rounded text-sm">==</code>) and inequality (<code class="bg-gray-100 px-2 py-1 rounded text-sm">!=</code>) comparisons previously performed costly string conversions for all types. Optimized to use type-specific comparisons first, falling back to string comparison only for complex types.
-                        </p>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Equality (<code class="bg-gray-100 px-2 py-1 rounded text-sm">==</code>) and inequality (<code class="bg-gray-100 px-2 py-1 rounded text-sm">!=</code>) comparisons previously performed costly string 
+conversions for all types.  
+Optimized to use type-specific comparisons first, falling back to string comparison 
+only for complex types.</p>
+                        </div>
                     </div>
                 </div>
+
 
                 <!-- Bug Report: NEUT-010 -->
                 <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
@@ -126,17 +438,14 @@
                     </div>
                     <div class="mb-4">
                         <span class="text-sm font-semibold text-gray-700">Description:</span>
-                        <p class="text-gray-600 mt-2">
-                            String interpolation using <code class="bg-gray-100 px-2 py-1 rounded text-sm">${...}</code> syntax may not properly handle all value types during expression evaluation, potentially causing runtime errors or unexpected string representations.
-                        </p>
-                    </div>
-                    <div>
-                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
-                        <p class="text-gray-600 mt-2">
-                            Testing confirmed that string interpolation correctly handles all value types (numbers, booleans, nil, arrays, objects) through the existing <code class="bg-gray-100 px-2 py-1 rounded text-sm">Value::toString()</code> implementation. No code changes were necessary.
-                        </p>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">String interpolation using <code class="bg-gray-100 px-2 py-1 rounded text-sm">${...}</code> syntax may not properly handle all value types 
+during expression evaluation, potentially causing runtime errors or unexpected string 
+representations.</p>
+                        </div>
                     </div>
                 </div>
+
 
                 <!-- Bug Report: NEUT-009 -->
                 <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
@@ -152,17 +461,13 @@
                     </div>
                     <div class="mb-4">
                         <span class="text-sm font-semibold text-gray-700">Description:</span>
-                        <p class="text-gray-600 mt-2">
-                            Array methods like <code class="bg-gray-100 px-2 py-1 rounded text-sm">push</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">slice</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">indexOf</code> do not enforce type consistency when used with typed variables, potentially allowing type violations.
-                        </p>
-                    </div>
-                    <div>
-                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
-                        <p class="text-gray-600 mt-2">
-                            Type annotations are currently compile-time only and not tracked at runtime. Implementing runtime type checking for array operations would require significant architectural changes to store and propagate type metadata. Deferred for a future release with proper runtime type system support.
-                        </p>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Array methods like <code class="bg-gray-100 px-2 py-1 rounded text-sm">push</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">slice</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">indexOf</code> do not enforce type consistency when 
+used with typed variables, potentially allowing type violations.</p>
+                        </div>
                     </div>
                 </div>
+
 
                 <!-- Bug Report: NEUT-008 -->
                 <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
@@ -182,17 +487,13 @@
                     </div>
                     <div class="mb-4">
                         <span class="text-sm font-semibold text-gray-700">Description:</span>
-                        <p class="text-gray-600 mt-2">
-                            Module loading implementation re-scans and re-parses files each time, leading to performance degradation when modules are loaded multiple times in complex applications.
-                        </p>
-                    </div>
-                    <div>
-                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
-                        <p class="text-gray-600 mt-2">
-                            Added <code class="bg-gray-100 px-2 py-1 rounded text-sm">loadedModuleCache</code> hash map to track already-loaded modules. The cache is checked before any module loading operations and updated after successful loads for both built-in and file-based modules, eliminating redundant parsing.
-                        </p>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Module loading implementation re-scans and re-parses files each time, leading to 
+performance degradation when modules are loaded multiple times in complex applications.</p>
+                        </div>
                     </div>
                 </div>
+
 
                 <!-- Bug Report: NEUT-007 -->
                 <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
@@ -212,11 +513,13 @@
                     </div>
                     <div class="mb-4">
                         <span class="text-sm font-semibold text-gray-700">Description:</span>
-                        <p class="text-gray-600 mt-2">
-                            Array index access has bounds checking but doesn't provide detailed error information about which array or line caused the error, making debugging difficult for users.
-                        </p>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Array index access has bounds checking but doesn't provide detailed error information 
+about which array or line caused the error, making debugging difficult for users.</p>
+                        </div>
                     </div>
                 </div>
+
 
                 <!-- Bug Report: NEUT-006 -->
                 <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
@@ -236,17 +539,15 @@
                     </div>
                     <div class="mb-4">
                         <span class="text-sm font-semibold text-gray-700">Description:</span>
-                        <p class="text-gray-600 mt-2">
-                            C-style operators <code class="bg-gray-100 px-2 py-1 rounded text-sm">&&</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">||</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">++</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">--</code> are not implemented. The <code class="bg-gray-100 px-2 py-1 rounded text-sm">&&</code> and <code class="bg-gray-100 px-2 py-1 rounded text-sm">||</code> symbol operators have been implemented and work the same as <code class="bg-gray-100 px-2 py-1 rounded text-sm">and</code> and <code class="bg-gray-100 px-2 py-1 rounded text-sm">or</code> keywords. The <code class="bg-gray-100 px-2 py-1 rounded text-sm">++</code> and <code class="bg-gray-100 px-2 py-1 rounded text-sm">--</code> operators require more complex AST changes and remain to be implemented.
-                        </p>
-                    </div>
-                    <div>
-                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
-                        <p class="text-gray-600 mt-2">
-                            Added full parser support for prefix (<code class="bg-gray-100 px-2 py-1 rounded text-sm">++x</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">--x</code>) and postfix (<code class="bg-gray-100 px-2 py-1 rounded text-sm">x++</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">x--</code>) increment/decrement operators. They are desugared to assignment expressions (<code class="bg-gray-100 px-2 py-1 rounded text-sm">x = x + 1</code> or <code class="bg-gray-100 px-2 py-1 rounded text-sm">x = x - 1</code>) during parsing. Both <code class="bg-gray-100 px-2 py-1 rounded text-sm">&&</code>/<code class="bg-gray-100 px-2 py-1 rounded text-sm">||</code> and <code class="bg-gray-100 px-2 py-1 rounded text-sm">++</code>/<code class="bg-gray-100 px-2 py-1 rounded text-sm">--</code> are now fully functional.
-                        </p>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">C-style operators <code class="bg-gray-100 px-2 py-1 rounded text-sm">&&</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">||</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">++</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">--</code> are not implemented.  
+The <code class="bg-gray-100 px-2 py-1 rounded text-sm">&&</code> and <code class="bg-gray-100 px-2 py-1 rounded text-sm">||</code> symbol operators have been implemented and work the same as <code class="bg-gray-100 px-2 py-1 rounded text-sm">and</code> 
+and <code class="bg-gray-100 px-2 py-1 rounded text-sm">or</code> keywords.  
+The <code class="bg-gray-100 px-2 py-1 rounded text-sm">++</code> and <code class="bg-gray-100 px-2 py-1 rounded text-sm">--</code> operators require more complex AST changes and remain to be implemented.</p>
+                        </div>
                     </div>
                 </div>
+
 
                 <!-- Bug Report: NEUT-005 -->
                 <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
@@ -266,17 +567,13 @@
                     </div>
                     <div class="mb-4">
                         <span class="text-sm font-semibold text-gray-700">Description:</span>
-                        <p class="text-gray-600 mt-2">
-                            Exception handling has been added with TRY/THROW/CATCH opcodes, but the implementation has inconsistent frame management and lacks proper exception re-throwing in finally blocks.
-                        </p>
-                    </div>
-                    <div>
-                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
-                        <p class="text-gray-600 mt-2">
-                            Upon investigation and testing, the exception handling implementation was found to be working as designed. In Neutron's semantics, a try-finally block (without catch) executes the finally block and then consumes the exception rather than re-throwing it. Frame management is consistent and properly synchronized with call frames. All exception handling tests pass successfully.
-                        </p>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Exception handling has been added with TRY/THROW/CATCH opcodes, but the implementation 
+has inconsistent frame management and lacks proper exception re-throwing in finally blocks.</p>
+                        </div>
                     </div>
                 </div>
+
 
                 <!-- Bug Report: NEUT-004 -->
                 <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
@@ -296,11 +593,15 @@
                     </div>
                     <div class="mb-4">
                         <span class="text-sm font-semibold text-gray-700">Description:</span>
-                        <p class="text-gray-600 mt-2">
-                            The garbage collector implementation is incomplete with basic marking and sweeping, but lacks proper root finding for complex object relationships, which could lead to memory leaks or premature deallocation. Fixed with improved recursive marking of nested objects and automatic GC triggering.
-                        </p>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">The garbage collector implementation is incomplete with basic marking and sweeping, 
+but lacks proper root finding for complex object relationships, which could lead to 
+memory leaks or premature deallocation.  
+Fixed with improved recursive marking of nested objects and automatic GC triggering.</p>
+                        </div>
                     </div>
                 </div>
+
 
                 <!-- Bug Report: NEUT-003 -->
                 <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
@@ -320,17 +621,14 @@
                     </div>
                     <div class="mb-4">
                         <span class="text-sm font-semibold text-gray-700">Description:</span>
-                        <p class="text-gray-600 mt-2">
-                            Complex nested expressions with multiple operations could potentially cause stack overflow due to the fixed stack size limit of 256 entries without proper bounds checking in all evaluation paths.
-                        </p>
-                    </div>
-                    <div>
-                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
-                        <p class="text-gray-600 mt-2">
-                            Increased the value stack size limit from 256 to 4096 entries in <code class="bg-gray-100 px-2 py-1 rounded text-sm">VM::push()</code> to accommodate complex nested expressions. Call frame recursion depth already has a proper 256-frame limit check in <code class="bg-gray-100 px-2 py-1 rounded text-sm">VM::call()</code> to prevent excessive recursion. Stack overflow checks are in place at all critical points.
-                        </p>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Complex nested expressions with multiple operations could potentially cause 
+stack overflow due to the fixed stack size limit of 256 entries without proper 
+bounds checking in all evaluation paths.</p>
+                        </div>
                     </div>
                 </div>
+
 
                 <!-- Bug Report: NEUT-002 -->
                 <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
@@ -350,11 +648,15 @@
                     </div>
                     <div class="mb-4">
                         <span class="text-sm font-semibold text-gray-700">Description:</span>
-                        <p class="text-gray-600 mt-2">
-                            The BANG_EQUAL token is recognized by the scanner and parsed by the parser, but there's no corresponding bytecode instruction or VM implementation for the <code class="bg-gray-100 px-2 py-1 rounded text-sm">!=</code> operator in the virtual machine. The VM's <code class="bg-gray-100 px-2 py-1 rounded text-sm">OP_EQUAL</code> instruction handles both <code class="bg-gray-100 px-2 py-1 rounded text-sm">==</code> and <code class="bg-gray-100 px-2 py-1 rounded text-sm">!=</code> operations incorrectly.
-                        </p>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">The BANG_EQUAL token is recognized by the scanner and parsed by the parser, but 
+there's no corresponding bytecode instruction or VM implementation for the <code class="bg-gray-100 px-2 py-1 rounded text-sm">!=</code> operator 
+in the virtual machine.  
+The VM's <code class="bg-gray-100 px-2 py-1 rounded text-sm">OP_EQUAL</code> instruction handles both <code class="bg-gray-100 px-2 py-1 rounded text-sm">==</code> and <code class="bg-gray-100 px-2 py-1 rounded text-sm">!=</code> operations incorrectly.</p>
+                        </div>
                     </div>
                 </div>
+
 
                 <!-- Bug Report: NEUT-001 -->
                 <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
@@ -374,33 +676,14 @@
                     </div>
                     <div class="mb-4">
                         <span class="text-sm font-semibold text-gray-700">Description:</span>
-                        <p class="text-gray-600 mt-2">
-                            The <code class="bg-gray-100 px-2 py-1 rounded text-sm">!=</code> operator produces inverted/incorrect boolean results in comparisons, as it is compiled to the same bytecode as <code class="bg-gray-100 px-2 py-1 rounded text-sm">==</code> (<code class="bg-gray-100 px-2 py-1 rounded text-sm">OP_EQUAL</code>), causing logical errors in program execution.
-                        </p>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">The <code class="bg-gray-100 px-2 py-1 rounded text-sm">!=</code> operator produces inverted/incorrect boolean results in comparisons, 
+as it is compiled to the same bytecode as <code class="bg-gray-100 px-2 py-1 rounded text-sm">==</code> (<code class="bg-gray-100 px-2 py-1 rounded text-sm">OP_EQUAL</code>), causing logical errors 
+in program execution.</p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Report a Bug Section -->
-                <div class="bg-blue-50 border border-blue-200 rounded-xl p-8 mt-12">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Report a Bug</h3>
-                    <p class="text-gray-600 mb-4">
-                        Found a bug in Neutron? Please report it on our GitHub Issues page:
-                    </p>
-                    <a href="https://github.com/yasakei/neutron/issues" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
-                        Report an Issue
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-16 mt-24">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-4 gap-8">
-                <div>
-                    <div class="flex items-center mb-4">
-                        <div class="neutron-logo">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="neutron-icon w-8 h-8">
                               <ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="#3b82f6" stroke-width="3" opacity="0.8"/>
                               <ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="#3b82f6" stroke-width="3" opacity="0.8" transform="rotate(60 50 50)"/>
@@ -417,6 +700,7 @@
                     <ul class="space-y-2">
                         <li><a href="docs.html" class="text-gray-400 hover:text-white transition-colors">Language Reference</a></li>
                         <li><a href="examples.html" class="text-gray-400 hover:text-white transition-colors">Examples</a></li>
+                        <li><a href="benchmarks.html" class="text-gray-400 hover:text-white transition-colors">Benchmarks</a></li>
                         <li><a href="changelog.html" class="text-gray-400 hover:text-white transition-colors">Changelog</a></li>
                         <li><a href="bug-tracker.html" class="text-gray-400 hover:text-white transition-colors">Bug Tracker</a></li>
                     </ul>
