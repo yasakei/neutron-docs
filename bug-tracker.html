@@ -105,6 +105,16 @@
                         </div>
                     </div>
                     <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Root Cause:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Two-part issue in stack management during function returns:</p>
+                            <ol class="list-decimal list-inside space-y-2 mt-2">
+<li class="text-gray-600"><strong>Regular Functions</strong>: <code class="bg-gray-100 px-2 py-1 rounded text-sm">OP_RETURN</code> resized the stack to <code class="bg-gray-100 px-2 py-1 rounded text-sm">return_slot_offset</code> which pointed to the first argument, leaving the callee (function object) on the stack. This caused recursive calls to return the function object instead of the computed value.</li>
+<li class="text-gray-600"><strong>Bound Methods in Loops</strong>: After fixing regular functions, bound method calls in loops crashed because they have a different stack layout (receiver acts as first argument at slot_offset position).</li>
+</ol>
+                        </div>
+                    </div>
+                    <div class="mb-4">
                         <span class="text-sm font-semibold text-gray-700">Description:</span>
                         <div class="mt-2">
                             <p class="text-gray-600 mb-2">When a function called itself recursively, the return value was a function object (e.g., <code class="bg-gray-100 px-2 py-1 rounded text-sm"><fn factorial></code>) instead of the computed numeric value. This made all recursive algorithms impossible to implement. Example:
@@ -188,6 +198,12 @@ Bound Method Call:
                         </div>
                     </div>
                     <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Root Cause:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">The compiler emitted bytecode with line number 0 (hardcoded placeholder) instead of actual line numbers from the source code. This was because <code class="bg-gray-100 px-2 py-1 rounded text-sm">Compiler::emitByte()</code> used <code class="bg-gray-100 px-2 py-1 rounded text-sm">chunk->write(byte, 0)</code> instead of tracking and passing the current line number.</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
                         <span class="text-sm font-semibold text-gray-700">Description:</span>
                         <div class="mt-2">
                             <p class="text-gray-600 mb-2">Runtime errors did not display line numbers in error messages. When errors occurred, users saw messages like "RuntimeError in file.nt: Division by zero." without any indication of which line caused the problem. The error handler tried to display line numbers using <code class="bg-gray-100 px-2 py-1 rounded text-sm">frame->currentLine</code>, but this was always -1 because the VM never updated it from the bytecode. The bytecode itself contained line 0 for all instructions because the compiler never tracked source line numbers.</p>
@@ -235,6 +251,12 @@ Stack trace:
                             <p class="text-gray-600 mb-2">In <code class="bg-gray-100 px-2 py-1 rounded text-sm">src/capi.cpp</code>, the <code class="bg-gray-100 px-2 py-1 rounded text-sm">CNativeFn::call()</code> function explicitly leaks memory from C function results to prevent cross-library deallocation issues. The comment on line 32 states "This leads to a memory leak, but prevents crashes". Every call to a C API function allocates a <code class="bg-gray-100 px-2 py-1 rounded text-sm">NeutronValue*</code> that is never freed, causing memory to accumulate over time in applications that frequently call C API functions. This is a significant issue for long-running applications or those with intensive C API usage.</p>
                         </div>
                     </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Added proper cleanup of the result pointer after copying the value. Since the value is copied before deletion, there's no risk of use-after-free, and proper memory management is restored.</p>
+                        </div>
+                    </div>
                 </div>
 
 
@@ -258,6 +280,12 @@ Stack trace:
                         <span class="text-sm font-semibold text-gray-700">Description:</span>
                         <div class="mt-2">
                             <p class="text-gray-600 mb-2">Multiple <code class="bg-gray-100 px-2 py-1 rounded text-sm">dynamic_cast</code> operations in <code class="bg-gray-100 px-2 py-1 rounded text-sm">src/vm.cpp</code> (lines 854, 892, 911, 930, 960, etc.) cast pointers without consistently checking for null results before dereferencing. While some casts have null checks, many do not, which could lead to null pointer dereferences if the cast fails. Examples include casting to <code class="bg-gray-100 px-2 py-1 rounded text-sm">Function*</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">Array*</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">Instance*</code>, and <code class="bg-gray-100 px-2 py-1 rounded text-sm">JsonObject*</code> types. This is particularly dangerous in property access operations where type assumptions might be incorrect.</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Upon code review, all critical dynamic casts already have proper null checks and fallback paths. The casts are used in if-else chains where a null result causes the code to proceed to the next type check, preventing null dereferences. Added clarifying comment for the one cast that appeared ambiguous.</p>
                         </div>
                     </div>
                 </div>
@@ -285,6 +313,12 @@ Stack trace:
                             <p class="text-gray-600 mb-2">In <code class="bg-gray-100 px-2 py-1 rounded text-sm">src/compiler/compiler.cpp</code> line 73, the <code class="bg-gray-100 px-2 py-1 rounded text-sm">makeConstant()</code> function checks if the constant pool exceeds <code class="bg-gray-100 px-2 py-1 rounded text-sm">UINT8_MAX</code> (255 constants), but instead of properly reporting an error, it simply returns 0 and continues execution. This silently corrupts the bytecode by using constant index 0 for all subsequent constants when the limit is exceeded. Programs with more than 255 constants will exhibit undefined behavior with incorrect values being used.</p>
                         </div>
                     </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Changed the function to throw a <code class="bg-gray-100 px-2 py-1 rounded text-sm">std::runtime_error</code> with a descriptive message when the constant pool limit is exceeded, preventing silent bytecode corruption.</p>
+                        </div>
+                    </div>
                 </div>
 
 
@@ -308,6 +342,12 @@ Stack trace:
                         <span class="text-sm font-semibold text-gray-700">Description:</span>
                         <div class="mt-2">
                             <p class="text-gray-600 mb-2">In <code class="bg-gray-100 px-2 py-1 rounded text-sm">src/compiler/compiler.cpp</code> lines 95-96 and 108-109, the code checks if jump offsets exceed <code class="bg-gray-100 px-2 py-1 rounded text-sm">UINT16_MAX</code> but the error reporting code is commented out with <code class="bg-gray-100 px-2 py-1 rounded text-sm">// error("Too much code to jump over.")</code> and <code class="bg-gray-100 px-2 py-1 rounded text-sm">// error("Loop body too large.")</code>. When jump offsets exceed the limit, the bytecode is silently corrupted with truncated values, leading to incorrect control flow and potentially infinite loops or crashes at runtime.</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Implemented proper error handling by throwing <code class="bg-gray-100 px-2 py-1 rounded text-sm">std::runtime_error</code> exceptions with descriptive messages in both <code class="bg-gray-100 px-2 py-1 rounded text-sm">patchJump()</code> and <code class="bg-gray-100 px-2 py-1 rounded text-sm">emitLoop()</code> functions when offset limits are exceeded.</p>
                         </div>
                     </div>
                 </div>
@@ -335,6 +375,12 @@ Stack trace:
                             <p class="text-gray-600 mb-2">In <code class="bg-gray-100 px-2 py-1 rounded text-sm">src/compiler/parser.cpp</code> line 175, there's a <code class="bg-gray-100 px-2 py-1 rounded text-sm">static_cast<LiteralExpr*></code> that assumes the expression is a <code class="bg-gray-100 px-2 py-1 rounded text-sm">LiteralExpr</code> without verification. This cast is used for type checking during variable declarations, but if the initializer is not actually a <code class="bg-gray-100 px-2 py-1 rounded text-sm">LiteralExpr</code> (e.g., it's a function call or complex expression), this will cause undefined behavior. The type checking system only works for literal values and silently fails for computed values.</p>
                         </div>
                     </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Added documentation comment explaining that the cast is safe because it's only executed when <code class="bg-gray-100 px-2 py-1 rounded text-sm">initializer->type == ExprType::LITERAL</code>, and clarified that non-literal expressions are type-checked at runtime by the VM's typed opcodes.</p>
+                        </div>
+                    </div>
                 </div>
 
 
@@ -358,6 +404,12 @@ Stack trace:
                         <span class="text-sm font-semibold text-gray-700">Description:</span>
                         <div class="mt-2">
                             <p class="text-gray-600 mb-2">The <code class="bg-gray-100 px-2 py-1 rounded text-sm">READ_CONSTANT</code> macro in <code class="bg-gray-100 px-2 py-1 rounded text-sm">src/vm.cpp</code> line 534 accesses the constants array using <code class="bg-gray-100 px-2 py-1 rounded text-sm">READ_BYTE()</code> as an index without bounds checking. If bytecode is corrupted or maliciously crafted with an out-of-range constant index, this will cause an out-of-bounds vector access, potentially crashing the VM or reading arbitrary memory. This is a security concern as well as a stability issue.</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Replaced the simple array access with a lambda that checks bounds before accessing the constants vector, throwing a descriptive runtime error if the index is out of range.</p>
                         </div>
                     </div>
                 </div>
@@ -389,6 +441,16 @@ nested function calls in expression evaluation contexts, where the return value 
 function call interfered with the operand resolution of the next function call.</p>
                         </div>
                     </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Fixed by implementing proper stack frame management in the function 
+call and return mechanisms to ensure that recursive function calls in expressions 
+return their computed values instead of function references. The stack pointer 
+management was enhanced to properly track return values during complex expression 
+evaluation.</p>
+                        </div>
+                    </div>
                 </div>
 
 
@@ -415,6 +477,12 @@ function call interfered with the operand resolution of the next function call.<
 conversions for all types.  
 Optimized to use type-specific comparisons first, falling back to string comparison 
 only for complex types.</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Implemented type-specific comparison optimization that checks value types first before performing string conversions, significantly improving performance for numeric and boolean comparisons.</p>
                         </div>
                     </div>
                 </div>
@@ -444,6 +512,14 @@ during expression evaluation, potentially causing runtime errors or unexpected s
 representations.</p>
                         </div>
                     </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Testing confirmed that string interpolation correctly handles all value 
+types (numbers, booleans, nil, arrays, objects) through the existing <code class="bg-gray-100 px-2 py-1 rounded text-sm">Value::toString()</code> 
+implementation. No code changes were necessary.</p>
+                        </div>
+                    </div>
                 </div>
 
 
@@ -464,6 +540,15 @@ representations.</p>
                         <div class="mt-2">
                             <p class="text-gray-600 mb-2">Array methods like <code class="bg-gray-100 px-2 py-1 rounded text-sm">push</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">slice</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">indexOf</code> do not enforce type consistency when 
 used with typed variables, potentially allowing type violations.</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Type annotations are currently compile-time only and not tracked at 
+runtime. Implementing runtime type checking for array operations would require 
+significant architectural changes to store and propagate type metadata. Deferred for 
+a future release with proper runtime type system support.</p>
                         </div>
                     </div>
                 </div>
@@ -492,6 +577,14 @@ used with typed variables, potentially allowing type violations.</p>
 performance degradation when modules are loaded multiple times in complex applications.</p>
                         </div>
                     </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Added <code class="bg-gray-100 px-2 py-1 rounded text-sm">loadedModuleCache</code> hash map to track already-loaded modules. 
+The cache is checked before any module loading operations and updated after successful 
+loads for both built-in and file-based modules, eliminating redundant parsing.</p>
+                        </div>
+                    </div>
                 </div>
 
 
@@ -516,6 +609,12 @@ performance degradation when modules are loaded multiple times in complex applic
                         <div class="mt-2">
                             <p class="text-gray-600 mb-2">Array index access has bounds checking but doesn't provide detailed error information 
 about which array or line caused the error, making debugging difficult for users.</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Improved error messages to include specific array information and line numbers when out-of-bounds access occurs, making debugging easier for developers.</p>
                         </div>
                     </div>
                 </div>
@@ -546,6 +645,15 @@ and <code class="bg-gray-100 px-2 py-1 rounded text-sm">or</code> keywords.
 The <code class="bg-gray-100 px-2 py-1 rounded text-sm">++</code> and <code class="bg-gray-100 px-2 py-1 rounded text-sm">--</code> operators require more complex AST changes and remain to be implemented.</p>
                         </div>
                     </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Added full parser support for prefix (<code class="bg-gray-100 px-2 py-1 rounded text-sm">++x</code>, <code class="bg-gray-100 px-2 py-1 rounded text-sm">--x</code>) and postfix (<code class="bg-gray-100 px-2 py-1 rounded text-sm">x++</code>, 
+<code class="bg-gray-100 px-2 py-1 rounded text-sm">x--</code>) increment/decrement operators. They are desugared to assignment expressions 
+(<code class="bg-gray-100 px-2 py-1 rounded text-sm">x = x + 1</code> or <code class="bg-gray-100 px-2 py-1 rounded text-sm">x = x - 1</code>) during parsing. Both <code class="bg-gray-100 px-2 py-1 rounded text-sm">&&</code>/<code class="bg-gray-100 px-2 py-1 rounded text-sm">||</code> and <code class="bg-gray-100 px-2 py-1 rounded text-sm">++</code>/<code class="bg-gray-100 px-2 py-1 rounded text-sm">--</code> are now 
+fully functional.</p>
+                        </div>
+                    </div>
                 </div>
 
 
@@ -570,6 +678,16 @@ The <code class="bg-gray-100 px-2 py-1 rounded text-sm">++</code> and <code clas
                         <div class="mt-2">
                             <p class="text-gray-600 mb-2">Exception handling has been added with TRY/THROW/CATCH opcodes, but the implementation 
 has inconsistent frame management and lacks proper exception re-throwing in finally blocks.</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Upon investigation and testing, the exception handling implementation 
+was found to be working as designed. In Neutron's semantics, a try-finally block 
+(without catch) executes the finally block and then consumes the exception rather than 
+re-throwing it. Frame management is consistent and properly synchronized with call frames. 
+All exception handling tests pass successfully.</p>
                         </div>
                     </div>
                 </div>
@@ -600,6 +718,12 @@ memory leaks or premature deallocation.
 Fixed with improved recursive marking of nested objects and automatic GC triggering.</p>
                         </div>
                     </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Implemented improved recursive marking of nested objects and automatic GC triggering to handle complex object relationships properly, preventing both memory leaks and premature deallocation.</p>
+                        </div>
+                    </div>
                 </div>
 
 
@@ -625,6 +749,15 @@ Fixed with improved recursive marking of nested objects and automatic GC trigger
                             <p class="text-gray-600 mb-2">Complex nested expressions with multiple operations could potentially cause 
 stack overflow due to the fixed stack size limit of 256 entries without proper 
 bounds checking in all evaluation paths.</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Increased the value stack size limit from 256 to 4096 entries in 
+<code class="bg-gray-100 px-2 py-1 rounded text-sm">VM::push()</code> to accommodate complex nested expressions. Call frame recursion depth 
+already has a proper 256-frame limit check in <code class="bg-gray-100 px-2 py-1 rounded text-sm">VM::call()</code> to prevent excessive 
+recursion. Stack overflow checks are in place at all critical points.</p>
                         </div>
                     </div>
                 </div>
@@ -655,6 +788,12 @@ in the virtual machine.
 The VM's <code class="bg-gray-100 px-2 py-1 rounded text-sm">OP_EQUAL</code> instruction handles both <code class="bg-gray-100 px-2 py-1 rounded text-sm">==</code> and <code class="bg-gray-100 px-2 py-1 rounded text-sm">!=</code> operations incorrectly.</p>
                         </div>
                     </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Added proper <code class="bg-gray-100 px-2 py-1 rounded text-sm">OP_NOT_EQUAL</code> bytecode instruction and VM implementation to correctly handle the <code class="bg-gray-100 px-2 py-1 rounded text-sm">!=</code> operator, ensuring it produces the correct boolean results for inequality comparisons.</p>
+                        </div>
+                    </div>
                 </div>
 
 
@@ -680,6 +819,12 @@ The VM's <code class="bg-gray-100 px-2 py-1 rounded text-sm">OP_EQUAL</code> ins
                             <p class="text-gray-600 mb-2">The <code class="bg-gray-100 px-2 py-1 rounded text-sm">!=</code> operator produces inverted/incorrect boolean results in comparisons, 
 as it is compiled to the same bytecode as <code class="bg-gray-100 px-2 py-1 rounded text-sm">==</code> (<code class="bg-gray-100 px-2 py-1 rounded text-sm">OP_EQUAL</code>), causing logical errors 
 in program execution.</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-semibold text-gray-700">Resolution:</span>
+                        <div class="mt-2">
+                            <p class="text-gray-600 mb-2">Separated the <code class="bg-gray-100 px-2 py-1 rounded text-sm">!=</code> operator implementation from <code class="bg-gray-100 px-2 py-1 rounded text-sm">==</code> by creating a dedicated <code class="bg-gray-100 px-2 py-1 rounded text-sm">OP_NOT_EQUAL</code> bytecode instruction, ensuring both operators produce correct boolean results.</p>
                         </div>
                     </div>
                 </div>
